@@ -33,7 +33,7 @@ target/
 spring-*/src/main/java/META-INF/MANIFEST.MF
 
 # IDEA artifacts and output dirs
-*.iml
+*.imlg
 *.ipr
 *.iws
 .idea
@@ -41,3 +41,4 @@ out
 test-output
 atlassian-ide-plugin.xml
 .gradletasknamecache
+!/spring-aop/src/main/java/org/springframework/aop/target
