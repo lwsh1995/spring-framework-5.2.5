@@ -556,7 +556,7 @@ class RouterConfiguration {
 	@Bean
 	fun mainRouter(userHandler: UserHandler) = coRouter {
 		GET("/", userHandler::listView)
-		GET("/api/user", userHandler::listApi)
+		GET("/api/info", userHandler::listApi)
 	}
 }
 ----

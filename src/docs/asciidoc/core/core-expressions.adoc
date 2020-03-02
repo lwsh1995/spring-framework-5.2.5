@@ -445,7 +445,7 @@ mode over time. After some number of interpreted runs, they switch to compiled
 form and, if something goes wrong with the compiled form (such as a type changing, as
 described earlier), the expression automatically switches back to interpreted form
 again. Sometime later, it may generate another compiled form and switch to it. Basically,
-the exception that the user gets in `IMMEDIATE` mode is instead handled internally.
+the exception that the info gets in `IMMEDIATE` mode is instead handled internally.
 
 `IMMEDIATE` mode exists because `MIXED` mode could cause issues for expressions that
 have side effects. If a compiled expression blows up after partially succeeding, it
@@ -545,7 +545,7 @@ the following example shows:
 [source,xml,indent=0,subs="verbatim"]
 ----
 	<bean id="taxCalculator" class="org.spring.samples.TaxCalculator">
-		<property name="defaultLocale" value="#{ systemProperties['user.region'] }"/>
+		<property name="defaultLocale" value="#{ systemProperties['info.region'] }"/>
 
 		<!-- other properties -->
 	</bean>
@@ -586,7 +586,7 @@ The following example sets the default value of a field variable:
 ----
 		public class FieldValueTestBean {
 
-			@Value("#{ systemProperties['user.region'] }")
+			@Value("#{ systemProperties['info.region'] }")
 			private String defaultLocale;
 
 			public void setDefaultLocale(String defaultLocale) {
@@ -603,7 +603,7 @@ The following example sets the default value of a field variable:
 ----
 	class FieldValueTestBean {
 
-		@Value("#{ systemProperties['user.region'] }")
+		@Value("#{ systemProperties['info.region'] }")
 		var defaultLocale: String? = null
 	}
 ----
@@ -617,7 +617,7 @@ The following example shows the equivalent but on a property setter method:
 
 		private String defaultLocale;
 
-		@Value("#{ systemProperties['user.region'] }")
+		@Value("#{ systemProperties['info.region'] }")
 		public void setDefaultLocale(String defaultLocale) {
 			this.defaultLocale = defaultLocale;
 		}
@@ -632,7 +632,7 @@ The following example shows the equivalent but on a property setter method:
 ----
 	class PropertyValueTestBean {
 
-		@Value("#{ systemProperties['user.region'] }")
+		@Value("#{ systemProperties['info.region'] }")
 		var defaultLocale: String? = null
 	}
 ----
@@ -650,7 +650,7 @@ examples show:
 
 		@Autowired
 		public void configure(MovieFinder movieFinder,
-				@Value("#{ systemProperties['user.region'] }") String defaultLocale) {
+				@Value("#{ systemProperties['info.region'] }") String defaultLocale) {
 			this.movieFinder = movieFinder;
 			this.defaultLocale = defaultLocale;
 		}
@@ -668,7 +668,7 @@ examples show:
 
 		@Autowired
 		fun configure(movieFinder: MovieFinder,
-					@Value("#{ systemProperties['user.region'] }") defaultLocale: String) {
+					@Value("#{ systemProperties['info.region'] }") defaultLocale: String) {
 			this.movieFinder = movieFinder
 			this.defaultLocale = defaultLocale
 		}
@@ -687,7 +687,7 @@ examples show:
 		private CustomerPreferenceDao customerPreferenceDao;
 
 		public MovieRecommender(CustomerPreferenceDao customerPreferenceDao,
-				@Value("#{systemProperties['user.country']}") String defaultLocale) {
+				@Value("#{systemProperties['info.country']}") String defaultLocale) {
 			this.customerPreferenceDao = customerPreferenceDao;
 			this.defaultLocale = defaultLocale;
 		}
@@ -699,7 +699,7 @@ examples show:
 .Kotlin
 ----
 	class MovieRecommender(private val customerPreferenceDao: CustomerPreferenceDao,
-				@Value("#{systemProperties['user.country']}") private val defaultLocale: String) {
+				@Value("#{systemProperties['info.country']}") private val defaultLocale: String) {
 		// ...	
 	}
 ----
@@ -1470,9 +1470,9 @@ show how to use the `#this` and `#root` variables:
 [[expressions-ref-functions]]
 === Functions
 
-You can extend SpEL by registering user-defined functions that can be called within the
+You can extend SpEL by registering info-defined functions that can be called within the
 expression string. The function is registered through the `EvaluationContext`. The
-following example shows how to register a user-defined function:
+following example shows how to register a info-defined function:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java

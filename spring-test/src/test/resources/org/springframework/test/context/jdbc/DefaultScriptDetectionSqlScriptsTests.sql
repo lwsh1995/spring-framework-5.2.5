@@ -1,9 +1,9 @@
-DROP TABLE user IF EXISTS;
+DROP TABLE info IF EXISTS;
 
-CREATE TABLE user (
+CREATE TABLE info (
   name VARCHAR(20) NOT NULL,
   PRIMARY KEY(name)
 );
 
-INSERT INTO user VALUES('Dilbert');
-INSERT INTO user VALUES('Dogbert');
+INSERT INTO info VALUES('Dilbert');
+INSERT INTO info VALUES('Dogbert');

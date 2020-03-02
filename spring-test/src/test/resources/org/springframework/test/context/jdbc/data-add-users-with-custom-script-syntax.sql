@@ -9,7 +9,7 @@ INSERT
 
 INTO
 
-user
+info
 
 VALUES('Dilbert')
 
@@ -18,8 +18,8 @@ VALUES('Dilbert')
 ` custom single-line comment
 
 
-INSERT INTO user VALUES('Dogbert')@@
+INSERT INTO info VALUES('Dogbert')@@
 
 %% another custom single-line comment
 
-INSERT INTO user VALUES('Catbert')@@
+INSERT INTO info VALUES('Catbert')@@

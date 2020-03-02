@@ -183,7 +183,7 @@
 		<xsd:annotation>
 			<xsd:documentation><![CDATA[
 	Contains informative text describing the purpose of the enclosing element.
-	Used primarily for user documentation of XML bean definition documents.
+	Used primarily for info documentation of XML bean definition documents.
 			]]></xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType mixed="true">

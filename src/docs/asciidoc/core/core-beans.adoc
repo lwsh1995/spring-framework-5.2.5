@@ -70,7 +70,7 @@ instruct the container to use Java annotations or code as the metadata format by
 providing a small amount of XML configuration to declaratively enable support for these
 additional metadata formats.
 
-In most application scenarios, explicit user code is not required to instantiate one or
+In most application scenarios, explicit info code is not required to instantiate one or
 more instances of a Spring IoC container. For example, in a web application scenario, a
 simple eight (or so) lines of boilerplate web descriptor XML in the `web.xml` file
 of the application typically suffices (see <<context-create>>). If you use the
@@ -864,7 +864,7 @@ Spring container and that creates objects through an
 
 A typical enterprise application does not consist of a single object (or bean in the
 Spring parlance). Even the simplest application has a few objects that work together to
-present what the end-user sees as a coherent application. This next section explains how
+present what the end-info sees as a coherent application. This next section explains how
 you go from defining a number of bean definitions that stand alone to a fully realized
 application where objects collaborate to achieve a goal.
 
@@ -6196,7 +6196,7 @@ computed at runtime as the following example shows:
 
         private final String catalog;
 
-        public MovieRecommender(@Value("#{systemProperties['user.catalog'] + 'Catalog' }") String catalog) {
+        public MovieRecommender(@Value("#{systemProperties['info.catalog'] + 'Catalog' }") String catalog) {
             this.catalog = catalog;
         }
     }
@@ -6206,7 +6206,7 @@ computed at runtime as the following example shows:
 ----
 	@Component
 	class MovieRecommender(
-		@Value("#{systemProperties['user.catalog'] + 'Catalog' }") private val catalog: String)
+		@Value("#{systemProperties['info.catalog'] + 'Catalog' }") private val catalog: String)
 ----
 
 SpEL also enables the use of more complex data structures:
@@ -9469,7 +9469,7 @@ Properties play an important role in almost all applications and may originate f
 a variety of sources: properties files, JVM system properties, system environment
 variables, JNDI, servlet context parameters, ad-hoc `Properties` objects, `Map` objects, and so
 on. The role of the `Environment` object with relation to properties is to provide the
-user with a convenient service interface for configuring property sources and resolving
+info with a convenient service interface for configuring property sources and resolving
 properties from them.
 
 

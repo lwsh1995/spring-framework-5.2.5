@@ -151,16 +151,20 @@ public abstract class AnnotationConfigUtils {
 		DefaultListableBeanFactory beanFactory = unwrapDefaultListableBeanFactory(registry);
 		if (beanFactory != null) {
 			if (!(beanFactory.getDependencyComparator() instanceof AnnotationAwareOrderComparator)) {
+				// 设置依赖比较器
 				beanFactory.setDependencyComparator(AnnotationAwareOrderComparator.INSTANCE);
 			}
 			if (!(beanFactory.getAutowireCandidateResolver() instanceof ContextAnnotationAutowireCandidateResolver)) {
+				// 设置自动注入解析器
 				beanFactory.setAutowireCandidateResolver(new ContextAnnotationAutowireCandidateResolver());
 			}
 		}
 
+		// BeanDefinition的名称和别名的持有者，可能为内部类的注册一个占位符
 		Set<BeanDefinitionHolder> beanDefs = new LinkedHashSet<>(8);
 
 		if (!registry.containsBeanDefinition(CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME)) {
+			// 用于启动处理中的@Configuration配置对象
 			RootBeanDefinition def = new RootBeanDefinition(ConfigurationClassPostProcessor.class);
 			def.setSource(source);
 			beanDefs.add(registerPostProcessor(registry, def, CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME));

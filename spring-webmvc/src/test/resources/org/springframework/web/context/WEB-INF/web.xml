@@ -97,9 +97,9 @@
   	<auth-constraint>
   	<role-name>registeredUsers</role-name>
   	</auth-constraint>
-  	<user-data-constraint>  	
+  	<info-data-constraint>
   	<transport-guarantee>NONE</transport-guarantee>
-  	</user-data-constraint>
+  	</info-data-constraint>
 </security-constraint>
 
 

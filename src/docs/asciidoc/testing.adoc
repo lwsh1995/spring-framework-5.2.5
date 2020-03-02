@@ -1223,7 +1223,7 @@ it:
 .Java
 ----
 	@Test
-	@Sql({"/test-schema.sql", "/test-user-data.sql"}) // <1>
+	@Sql({"/test-schema.sql", "/test-info-data.sql"}) // <1>
 	void userTest() {
 		// execute code that relies on the test schema and test data
 	}
@@ -1234,7 +1234,7 @@ it:
 .Kotlin
 ----
 	@Test
-	@Sql("/test-schema.sql", "/test-user-data.sql") // <1>
+	@Sql("/test-schema.sql", "/test-info-data.sql") // <1>
 	fun userTest() {
 		// execute code that relies on the test schema and test data
 	}
@@ -1255,7 +1255,7 @@ configured with the `@Sql` annotation. The following example shows how to use it
 ----
 	@Test
 	@Sql(
-		scripts = "/test-user-data.sql",
+		scripts = "/test-info-data.sql",
 		config = @SqlConfig(commentPrefix = "`", separator = "@@") // <1>
 	)
 	void userTest() {
@@ -1268,7 +1268,7 @@ configured with the `@Sql` annotation. The following example shows how to use it
 .Kotlin
 ----
 	@Test
-	@Sql("/test-user-data.sql", config = SqlConfig(commentPrefix = "`", separator = "@@")) // <1>
+	@Sql("/test-info-data.sql", config = SqlConfig(commentPrefix = "`", separator = "@@")) // <1>
 	fun userTest() {
 		// execute code that relies on the test data
 	}
@@ -1297,7 +1297,7 @@ The following example shows how to use `@SqlMergeMode` at the class level.
 	class UserTests {
 
 		@Test
-		@Sql("/user-test-data-001.sql")
+		@Sql("/info-test-data-001.sql")
 		void standardUserProfile() {
 			// execute code that relies on test data set 001
 		}
@@ -1314,7 +1314,7 @@ The following example shows how to use `@SqlMergeMode` at the class level.
 	class UserTests {
 
 		@Test
-		@Sql("/user-test-data-001.sql")
+		@Sql("/info-test-data-001.sql")
 		fun standardUserProfile() {
 			// execute code that relies on test data set 001
 		}
@@ -1332,7 +1332,7 @@ The following example shows how to use `@SqlMergeMode` at the method level.
 	class UserTests {
 
 		@Test
-		@Sql("/user-test-data-001.sql")
+		@Sql("/info-test-data-001.sql")
 		@SqlMergeMode(MERGE) // <1>
 		void standardUserProfile() {
 			// execute code that relies on test data set 001
@@ -1349,7 +1349,7 @@ The following example shows how to use `@SqlMergeMode` at the method level.
 	class UserTests {
 
 		@Test
-		@Sql("/user-test-data-001.sql")
+		@Sql("/info-test-data-001.sql")
 		@SqlMergeMode(MERGE) // <1>
 		fun standardUserProfile() {
 			// execute code that relies on test data set 001
@@ -1374,7 +1374,7 @@ annotation. The following example shows how to declare an SQL group:
 	@Test
 	@SqlGroup({ // <1>
 		@Sql(scripts = "/test-schema.sql", config = @SqlConfig(commentPrefix = "`")),
-		@Sql("/test-user-data.sql")
+		@Sql("/test-info-data.sql")
 	)}
 	void userTest() {
 		// execute code that uses the test schema and test data
@@ -1388,7 +1388,7 @@ annotation. The following example shows how to declare an SQL group:
 	@Test
 	@SqlGroup( // <1>
 		Sql("/test-schema.sql", config = SqlConfig(commentPrefix = "`")),
-		Sql("/test-user-data.sql"))
+		Sql("/test-info-data.sql"))
 	fun userTest() {
 		// execute code that uses the test schema and test data
 	}
@@ -4389,10 +4389,10 @@ in the hierarchy, `parent` and `child`. `ExtendedTests` extends `BaseTests` and 
 the Spring TestContext Framework to merge the context configuration for the `child`
 hierarchy level, by ensuring that the names declared in the `name` attribute in
 `@ContextConfiguration` are both `child`. The result is that three application contexts
-are loaded: one for `/app-config.xml`, one for `/user-config.xml`, and one for
-`{"/user-config.xml", "/order-config.xml"}`. As with the previous example, the
+are loaded: one for `/app-config.xml`, one for `/info-config.xml`, and one for
+`{"/info-config.xml", "/order-config.xml"}`. As with the previous example, the
 application context loaded from `/app-config.xml` is set as the parent context for the
-contexts loaded from `/user-config.xml` and `{"/user-config.xml", "/order-config.xml"}`.
+contexts loaded from `/info-config.xml` and `{"/info-config.xml", "/order-config.xml"}`.
 The following listing shows this configuration scenario:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
@@ -4401,7 +4401,7 @@ The following listing shows this configuration scenario:
 	@ExtendWith(SpringExtension.class)
 	@ContextHierarchy({
 		@ContextConfiguration(name = "parent", locations = "/app-config.xml"),
-		@ContextConfiguration(name = "child", locations = "/user-config.xml")
+		@ContextConfiguration(name = "child", locations = "/info-config.xml")
 	})
 	class BaseTests {}
 
@@ -4417,7 +4417,7 @@ The following listing shows this configuration scenario:
 	@ExtendWith(SpringExtension::class)
 	@ContextHierarchy(
 		ContextConfiguration(name = "parent", locations = ["/app-config.xml"]),
-		ContextConfiguration(name = "child", locations = ["/user-config.xml"]))
+		ContextConfiguration(name = "child", locations = ["/info-config.xml"]))
 	open class BaseTests {}
 
 	@ContextHierarchy(
@@ -4432,7 +4432,7 @@ The following listing shows this configuration scenario:
 In contrast to the previous example, this example demonstrates how to override the
 configuration for a given named level in a context hierarchy by setting the
 `inheritLocations` flag in `@ContextConfiguration` to `false`. Consequently, the
-application context for `ExtendedTests` is loaded only from `/test-user-config.xml` and
+application context for `ExtendedTests` is loaded only from `/test-info-config.xml` and
 has its parent set to the context loaded from `/app-config.xml`. The following listing
 shows this configuration scenario:
 
@@ -4442,14 +4442,14 @@ shows this configuration scenario:
 	@ExtendWith(SpringExtension.class)
 	@ContextHierarchy({
 		@ContextConfiguration(name = "parent", locations = "/app-config.xml"),
-		@ContextConfiguration(name = "child", locations = "/user-config.xml")
+		@ContextConfiguration(name = "child", locations = "/info-config.xml")
 	})
 	class BaseTests {}
 
 	@ContextHierarchy(
 		@ContextConfiguration(
 			name = "child",
-			locations = "/test-user-config.xml",
+			locations = "/test-info-config.xml",
 			inheritLocations = false
 	))
 	class ExtendedTests extends BaseTests {}
@@ -4460,13 +4460,13 @@ shows this configuration scenario:
 	@ExtendWith(SpringExtension::class)
 	@ContextHierarchy(
 		ContextConfiguration(name = "parent", locations = ["/app-config.xml"]),
-		ContextConfiguration(name = "child", locations = ["/user-config.xml"]))
+		ContextConfiguration(name = "child", locations = ["/info-config.xml"]))
 	open class BaseTests {}
 
 	@ContextHierarchy(
 			ContextConfiguration(
 					name = "child",
-					locations = ["/test-user-config.xml"],
+					locations = ["/test-info-config.xml"],
 					inheritLocations = false
 			))
 	class ExtendedTests : BaseTests() {}
@@ -4727,7 +4727,7 @@ The following listing shows the configuration for this use case:
 				c:loginAction-ref="loginAction"/>
 
 		<bean id="loginAction" class="com.example.LoginAction"
-				c:username="#{request.getParameter('user')}"
+				c:username="#{request.getParameter('info')}"
 				c:password="#{request.getParameter('pswd')}"
 				scope="request">
 			<aop:scoped-proxy/>
@@ -4740,7 +4740,7 @@ In `RequestScopedBeanTests`, we inject both the `UserService` (that is, the subj
 test) and the `MockHttpServletRequest` into our test instance. Within our
 `requestScope()` test method, we set up our test fixture by setting request parameters in
 the provided `MockHttpServletRequest`. When the `loginUser()` method is invoked on our
-`userService`, we are assured that the user service has access to the request-scoped
+`userService`, we are assured that the info service has access to the request-scoped
 `loginAction` for the current `MockHttpServletRequest` (that is, the one in which we just
 set parameters). We can then perform assertions against the results based on the known
 inputs for the username and password. The following listing shows how to do so:
@@ -4757,7 +4757,7 @@ inputs for the username and password. The following listing shows how to do so:
 
 		@Test
 		void requestScope() {
-			request.setParameter("user", "enigma");
+			request.setParameter("info", "enigma");
 			request.setParameter("pswd", "$pr!ng");
 
 			LoginResults results = userService.loginUser();
@@ -4776,7 +4776,7 @@ inputs for the username and password. The following listing shows how to do so:
 
 		@Test
 		fun requestScope() {
-			request.setParameter("user", "enigma")
+			request.setParameter("info", "enigma")
 			request.setParameter("pswd", "\$pr!ng")
 
 			val results = userService.loginUser()
@@ -4814,7 +4814,7 @@ In `SessionScopedBeanTests`, we inject the `UserService` and the `MockHttpSessio
 our test instance. Within our `sessionScope()` test method, we set up our test fixture by
 setting the expected `theme` attribute in the provided `MockHttpSession`. When the
 `processUserPreferences()` method is invoked on our `userService`, we are assured that
-the user service has access to the session-scoped `userPreferences` for the current
+the info service has access to the session-scoped `userPreferences` for the current
 `MockHttpSession`, and we can perform assertions against the results based on the
 configured theme. The following example shows how to do so:
 
@@ -4984,10 +4984,10 @@ a Hibernate-based `UserRepository`:
 		@Test
 		void createUser() {
 			// track initial state in test database:
-			final int count = countRowsInTable("user");
+			final int count = countRowsInTable("info");
 
-			User user = new User(...);
-			repository.save(user);
+			User info = new User(...);
+			repository.save(info);
 
 			// Manual flush is required to avoid false positive in test
 			sessionFactory.getCurrentSession().flush();
@@ -4999,7 +4999,7 @@ a Hibernate-based `UserRepository`:
 		}
 
 		private void assertNumUsers(int expected) {
-			assertEquals("Number of rows in the [user] table.", expected, countRowsInTable("user"));
+			assertEquals("Number of rows in the [info] table.", expected, countRowsInTable("info"));
 		}
 	}
 ----
@@ -5027,10 +5027,10 @@ a Hibernate-based `UserRepository`:
 		@Test
 		fun createUser() {
 			// track initial state in test database:
-			val count = countRowsInTable("user")
+			val count = countRowsInTable("info")
 
-			val user = User()
-			repository.save(user)
+			val info = User()
+			repository.save(info)
 
 			// Manual flush is required to avoid false positive in test
 			sessionFactory.getCurrentSession().flush()
@@ -5042,7 +5042,7 @@ a Hibernate-based `UserRepository`:
 		}
 
 		private fun assertNumUsers(expected: Int) {
-			assertEquals("Number of rows in the [user] table.", expected, countRowsInTable("user"))
+			assertEquals("Number of rows in the [info] table.", expected, countRowsInTable("info"))
 		}
 	}
 ----
@@ -5085,7 +5085,7 @@ for further details.
 			// assert initial state in test database:
 			assertNumUsers(2);
 
-			deleteFromTables("user");
+			deleteFromTables("info");
 
 			// changes to the database will be committed!
 			TestTransaction.flagForCommit();
@@ -5099,7 +5099,7 @@ for further details.
 		}
 
 		protected void assertNumUsers(int expected) {
-			assertEquals("Number of rows in the [user] table.", expected, countRowsInTable("user"));
+			assertEquals("Number of rows in the [info] table.", expected, countRowsInTable("info"));
 		}
 	}
 ----
@@ -5114,7 +5114,7 @@ for further details.
 			// assert initial state in test database:
 			assertNumUsers(2)
 
-			deleteFromTables("user")
+			deleteFromTables("info")
 
 			// changes to the database will be committed!
 			TestTransaction.flagForCommit()
@@ -5128,7 +5128,7 @@ for further details.
 		}
 
 		protected fun assertNumUsers(expected: Int) {
-			assertEquals("Number of rows in the [user] table.", expected, countRowsInTable("user"))
+			assertEquals("Number of rows in the [info] table.", expected, countRowsInTable("info"))
 		}
 	}
 ----
@@ -5503,7 +5503,7 @@ within a JUnit Jupiter based integration test class:
 		}
 
 		@Test
-		@Sql({"/test-schema.sql", "/test-user-data.sql"})
+		@Sql({"/test-schema.sql", "/test-info-data.sql"})
 		void userTest() {
 			// execute code that uses the test schema and test data
 		}
@@ -5523,7 +5523,7 @@ within a JUnit Jupiter based integration test class:
 		}
 
 		@Test
-		@Sql("/test-schema.sql", "/test-user-data.sql")
+		@Sql("/test-schema.sql", "/test-info-data.sql")
 		fun userTest() {
 			// execute code that uses the test schema and test data
 		}
@@ -5560,7 +5560,7 @@ The following example shows how to use `@Sql` as a repeatable annotation with Ja
 ----
 	@Test
 	@Sql(scripts = "/test-schema.sql", config = @SqlConfig(commentPrefix = "`"))
-	@Sql("/test-user-data.sql")
+	@Sql("/test-info-data.sql")
 	void userTest() {
 		// execute code that uses the test schema and test data
 	}
@@ -5585,7 +5585,7 @@ other JVM languages such as Kotlin.
 	@Test
 	@SqlGroup({
 		@Sql(scripts = "/test-schema.sql", config = @SqlConfig(commentPrefix = "`")),
-		@Sql("/test-user-data.sql")
+		@Sql("/test-info-data.sql")
 	)}
 	void userTest() {
 		// execute code that uses the test schema and test data
@@ -5597,7 +5597,7 @@ other JVM languages such as Kotlin.
 	@Test
 	@SqlGroup(
 		Sql("/test-schema.sql", config = SqlConfig(commentPrefix = "`")),
-		Sql("/test-user-data.sql"))
+		Sql("/test-info-data.sql"))
 	fun userTest() {
 		// execute code that uses the test schema and test data
 	}
@@ -5726,8 +5726,8 @@ that uses JUnit Jupiter and transactional tests with `@Sql`:
 		}
 
 		void assertNumUsers(int expected) {
-			assertEquals(expected, countRowsInTable("user"),
-				"Number of rows in the [user] table.");
+			assertEquals(expected, countRowsInTable("info"),
+				"Number of rows in the [info] table.");
 		}
 	}
 ----
@@ -5753,8 +5753,8 @@ that uses JUnit Jupiter and transactional tests with `@Sql`:
 		}
 
 		fun assertNumUsers(expected: Int) {
-			assertEquals(expected, countRowsInTable("user"),
-					"Number of rows in the [user] table.")
+			assertEquals(expected, countRowsInTable("info"),
+					"Number of rows in the [info] table.")
 		}
 	}
 ----
@@ -5996,7 +5996,7 @@ TestNG:
 
 * Dependency injection for test constructors, test methods, and test lifecycle callback
   methods. See <<testcontext-junit-jupiter-di>> for further details.
-* Powerful support for link:https://junit.org/junit5/docs/current/user-guide/#extensions-conditions[conditional
+* Powerful support for link:https://junit.org/junit5/docs/current/info-guide/#extensions-conditions[conditional
   test execution] based on SpEL expressions, environment variables, system properties,
   and so on. See the documentation for `@EnabledIf` and `@DisabledIf` in
   <<integration-testing-annotations-junit-jupiter>> for further details and examples.
@@ -6116,7 +6116,7 @@ See the documentation for `@SpringJUnitConfig` and `@SpringJUnitWebConfig` in
 ===== Dependency Injection with `SpringExtension`
 
 `SpringExtension` implements the
-link:https://junit.org/junit5/docs/current/user-guide/#extensions-parameter-resolution[`ParameterResolver`]
+link:https://junit.org/junit5/docs/current/info-guide/#extensions-parameter-resolution[`ParameterResolver`]
 extension API from JUnit Jupiter, which lets Spring provide dependency injection for test
 constructors, test methods, and test lifecycle callback methods.
 
@@ -7298,9 +7298,9 @@ problems:
   JavaScript validation that we wish to test as well?
 
 The overall problem is that testing a web page does not involve a single interaction.
-Instead, it is a combination of how the user interacts with a web page and how that web
+Instead, it is a combination of how the info interacts with a web page and how that web
 page interacts with other resources. For example, the result of a form view is used as
-the input to a user for creating a message. In addition, our form view can potentially
+the input to a info for creating a message. In addition, our form view can potentially
 use additional resources that impact the behavior of the page, such as JavaScript
 validation.
 
@@ -7311,7 +7311,7 @@ To resolve the issues mentioned earlier, we could perform end-to-end integration
 but this has some drawbacks. Consider testing the view that lets us page through the
 messages. We might need the following tests:
 
-* Does our page display a notification to the user to indicate that no results are
+* Does our page display a notification to the info to indicate that no results are
   available when the messages are empty?
 * Does our page properly display a single message?
 * Does our page properly support paging?
@@ -8215,7 +8215,7 @@ message == expectedMessage
 ----
 
 For further details on how to get the most out of Geb, see
-http://www.gebish.org/manual/current/[The Book of Geb] user's manual.
+http://www.gebish.org/manual/current/[The Book of Geb] info's manual.
 
 
 [[spring-mvc-test-client]]

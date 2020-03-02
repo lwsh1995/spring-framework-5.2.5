@@ -129,7 +129,7 @@ By default, `@CrossOrigin` allows:
 * All HTTP methods to which the controller method is mapped.
 
 `allowedCredentials` is not enabled by default, since that establishes a trust level
-that exposes sensitive user-specific information (such as cookies and CSRF tokens) and
+that exposes sensitive info-specific information (such as cookies and CSRF tokens) and
 should only be used where appropriate.
 
 `maxAge` is set to 30 minutes.
@@ -239,7 +239,7 @@ By default, global configuration enables the following:
 
 
 `allowedCredentials` is not enabled by default, since that establishes a trust level
-that exposes sensitive user-specific information (such as cookies and CSRF tokens) and
+that exposes sensitive info-specific information (such as cookies and CSRF tokens) and
 should only be used where appropriate.
 
 `maxAge` is set to 30 minutes.

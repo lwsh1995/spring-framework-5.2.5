@@ -5,7 +5,7 @@
 		http://www.springframework.org/schema/websocket https://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
 	<websocket:message-broker application-destination-prefix="/app"
-							  user-destination-prefix="/personal"
+							  info-destination-prefix="/personal"
 							  path-matcher="pathMatcher"
 							  path-helper="urlPathHelper"
 							  preserve-publish-order="true">

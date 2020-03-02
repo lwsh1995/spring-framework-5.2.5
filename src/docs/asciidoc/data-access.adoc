@@ -412,7 +412,7 @@ The preferred approach is to use Spring's highest-level template based persisten
 integration APIs or to use native ORM APIs with transaction-aware factory beans or
 proxies for managing the native resource factories. These transaction-aware solutions
 internally handle resource creation and reuse, cleanup, optional transaction
-synchronization of the resources, and exception mapping. Thus, user data access code does
+synchronization of the resources, and exception mapping. Thus, info data access code does
 not have to address these tasks but can focus purely on non-boilerplate
 persistence logic. Generally, you use the native ORM API or take a template approach
 for JDBC access by using the `JdbcTemplate`. These solutions are detailed in subsequent
@@ -3699,7 +3699,7 @@ The following example shows C3P0 configuration:
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="${jdbc.driverClassName}"/>
 		<property name="jdbcUrl" value="${jdbc.url}"/>
-		<property name="user" value="${jdbc.username}"/>
+		<property name="info" value="${jdbc.username}"/>
 		<property name="password" value="${jdbc.password}"/>
 	</bean>
 
@@ -5556,7 +5556,7 @@ are passed in as a parameter to the stored procedure.
 
 The `SqlReturnType` interface has a single method (named
 `getTypeValue`) that must be implemented. This interface is used as part of the
-declaration of an `SqlOutParameter`. The following example shows returning the value of an Oracle `STRUCT` object of the user
+declaration of an `SqlOutParameter`. The following example shows returning the value of an Oracle `STRUCT` object of the info
 declared type `ITEM_TYPE`:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
@@ -6169,7 +6169,7 @@ The benefits of using the Spring Framework to create your ORM DAOs include:
 TIP: For more comprehensive ORM support, including support for alternative database
 technologies such as MongoDB, you might want to check out the
 https://projects.spring.io/spring-data/[Spring Data] suite of projects. If you are
-a JPA user, the https://spring.io/guides/gs/accessing-data-jpa/[Getting Started Accessing
+a JPA info, the https://spring.io/guides/gs/accessing-data-jpa/[Getting Started Accessing
 Data with JPA] guide from https://spring.io provides a great introduction.
 
 

@@ -111,7 +111,7 @@
  *
  * @param path the path (string value) of the value required to bind to.
  *     Spring defaults to a command name of "command" but this can be
- *     overridden by user configuration.
+ *     overridden by info configuration.
  -->
 <#macro bind path>
     <#if htmlEscape?exists>
@@ -235,7 +235,7 @@ ${stringStatusValue}</textarea>
 <#--
  * formMultiSelect
  *
- * Show a listbox of options allowing the user to make 0 or more choices from
+ * Show a listbox of options allowing the info to make 0 or more choices from
  * the list of options.
  *
  * @param path the name of the field to bind to
@@ -345,7 +345,7 @@ ${stringStatusValue}</textarea>
  * Check a value in a list to see if it is the currently selected value.
  * If so, add the 'selected="selected"' text to the output.
  * Handles values of numeric and string types.
- * This function is used internally but can be accessed by user code if required.
+ * This function is used internally but can be accessed by info code if required.
  *
  * @param value the current value in a list iteration
 -->
@@ -359,7 +359,7 @@ ${stringStatusValue}</textarea>
  *
  * Macro to return true if the list contains the scalar, false if not.
  * Surprisingly not a FreeMarker builtin.
- * This function is used internally but can be accessed by user code if required.
+ * This function is used internally but can be accessed by info code if required.
  *
  * @param list the list to search for the item
  * @param item the item to search for in the list

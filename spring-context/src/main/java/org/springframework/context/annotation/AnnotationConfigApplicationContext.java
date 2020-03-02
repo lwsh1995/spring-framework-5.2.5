@@ -61,9 +61,21 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	/**
 	 * Create a new AnnotationConfigApplicationContext that needs to be populated
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
+	 * 创建AnnotationConfigApplicationContext并填充需要注册回调和手动刷新
+	 * 同时会依次调用父类的构造器
+	 *
+	 * <p>-> {@link org.springframework.core.io.DefaultResourceLoader DefaultResourceLoader} 初始化classloader，
+	 * 即为当前线程的classloader
+	 * <p>-> {@link org.springframework.context.support.AbstractApplicationContext AbstractApplicationContext}
+	 * 初始化资源模式解析器PathMatchingResourcePatternResolver，如解析classpath*:、web/*.xml等
+	 * <p>-> {@link GenericApplicationContext GenericApplicationContext} 声明Bean工厂DefaultListableBeanFactory
+	 * <p>-> {@link AnnotationConfigApplicationContext AnnotationConfigApplicationContext} 初始化AnnotatedBeanDefinitionReader、
+	 * ClassPathBeanDefinitionScanner解析注册的Bean对象
 	 */
 	public AnnotationConfigApplicationContext() {
+		// 编程注解的bean对象适配器
 		this.reader = new AnnotatedBeanDefinitionReader(this);
+		// class路径解析器，解析被Component、Service、Controller等注解标识的类
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 

@@ -1299,7 +1299,7 @@ to have the payload arguments be automatically validated.
 Values are converted to the declared method argument type as necessary.
 
 | `java.security.Principal`
-| Reflects the user logged in at the time of the WebSocket HTTP handshake.
+| Reflects the info logged in at the time of the WebSocket HTTP handshake.
 
 |===
 
@@ -1313,7 +1313,7 @@ same as that of the inbound message but prefixed with `/topic`.
 You can use the `@SendTo` and `@SendToUser` annotations to customize the destination of
 the output message. `@SendTo` is used to customize the target destination or to
 specify multiple destinations. `@SendToUser` is used to direct the output message
-to only the user associated with the input message. See <<websocket-stomp-user-destination>>.
+to only the info associated with the input message. See <<websocket-stomp-info-destination>>.
 
 You can use both `@SendTo` and `@SendToUser` at the same time on the same method, and both
 are supported at the class level, in which case they act as a default for methods in the
@@ -1739,37 +1739,37 @@ That can be a request to upgrade to WebSockets (that is, a WebSocket handshake)
 or, in the case of SockJS fallbacks, a series of SockJS HTTP transport requests.
 
 Many web applications already have authentication and authorization in place to
-secure HTTP requests. Typically, a user is authenticated through Spring Security
+secure HTTP requests. Typically, a info is authenticated through Spring Security
 by using some mechanism such as a login page, HTTP basic authentication, or another way.
-The security context for the authenticated user is saved in the HTTP session
+The security context for the authenticated info is saved in the HTTP session
 and is associated with subsequent requests in the same cookie-based session.
 
 Therefore, for a WebSocket handshake or for SockJS HTTP transport requests,
-typically, there is already an authenticated user accessible through
-`HttpServletRequest#getUserPrincipal()`. Spring automatically associates that user
+typically, there is already an authenticated info accessible through
+`HttpServletRequest#getUserPrincipal()`. Spring automatically associates that info
 with a WebSocket or SockJS session created for them and, subsequently, with all
-STOMP messages transported over that session through a user header.
+STOMP messages transported over that session through a info header.
 
 In short, a typical web application needs to do nothing
-beyond what it already does for security. The user is authenticated at
+beyond what it already does for security. The info is authenticated at
 the HTTP request level with a security context that is maintained through a cookie-based
 HTTP session (which is then associated with WebSocket or SockJS sessions created
-for that user) and results in a user header being stamped on every `Message` flowing
+for that info) and results in a info header being stamped on every `Message` flowing
 through the application.
 
 Note that the STOMP protocol does have `login` and `passcode` headers
 on the `CONNECT` frame. Those were originally designed for and are still needed,
 for example, for STOMP over TCP. However, for STOMP over WebSocket, by default,
 Spring ignores authorization headers at the STOMP protocol level, assumes that
-the user is already authenticated at the HTTP transport level, and expects that
-the WebSocket or SockJS session contain the authenticated user.
+the info is already authenticated at the HTTP transport level, and expects that
+the WebSocket or SockJS session contain the authenticated info.
 
 NOTE: Spring Security provides
 https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#websocket[WebSocket sub-protocol authorization]
-that uses a `ChannelInterceptor` to authorize messages based on the user header in them.
+that uses a `ChannelInterceptor` to authorize messages based on the info header in them.
 Also, Spring Session provides a
 https://docs.spring.io/spring-session/docs/current/reference/html5/#websocket[WebSocket integration]
-that ensures the user HTTP session does not expire when the WebSocket session is still active.
+that ensures the info HTTP session does not expire when the WebSocket session is still active.
 
 
 
@@ -1811,8 +1811,8 @@ Doing so requires two simple steps:
 
 The next example uses server-side configuration to register a custom authentication
 interceptor. Note that an interceptor needs only to authenticate and set
-the user header on the CONNECT `Message`. Spring notes and saves the authenticated
-user and associate it with subsequent STOMP messages on the same session. The following
+the info header on the CONNECT `Message`. Spring notes and saves the authenticated
+info and associate it with subsequent STOMP messages on the same session. The following
 example shows how register a custom authentication interceptor:
 
 [source,java,indent=0]
@@ -1830,8 +1830,8 @@ example shows how register a custom authentication interceptor:
 					StompHeaderAccessor accessor =
 							MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 					if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-						Authentication user = ... ; // access authentication header(s)
-						accessor.setUser(user);
+						Authentication info = ... ; // access authentication header(s)
+						accessor.setUser(info);
 					}
 					return message;
 				}
@@ -1848,28 +1848,28 @@ its own implementation of `WebSocketMessageBrokerConfigurer` that is marked with
 
 
 
-[[websocket-stomp-user-destination]]
+[[websocket-stomp-info-destination]]
 === User Destinations
 
-An application can send messages that target a specific user, and Spring's STOMP support
-recognizes destinations prefixed with `/user/` for this purpose.
-For example, a client might subscribe to the `/user/queue/position-updates` destination.
+An application can send messages that target a specific info, and Spring's STOMP support
+recognizes destinations prefixed with `/info/` for this purpose.
+For example, a client might subscribe to the `/info/queue/position-updates` destination.
 This destination is handled by the `UserDestinationMessageHandler` and
-transformed into a destination unique to the user session
+transformed into a destination unique to the info session
 (such as `/queue/position-updates-user123`). This provides the convenience of subscribing
 to a generically named destination while, at the same time, ensuring no collisions
-with other users who subscribe to the same destination so that each user can receive
+with other users who subscribe to the same destination so that each info can receive
 unique stock position updates.
 
 On the sending side, messages can be sent to a destination such as
-pass:q[`/user/{username}/queue/position-updates`], which in turn is translated
+pass:q[`/info/{username}/queue/position-updates`], which in turn is translated
 by the `UserDestinationMessageHandler` into one or more destinations, one for each
-session associated with the user. This lets any component within the application
-send messages that target a specific user without necessarily knowing anything more
+session associated with the info. This lets any component within the application
+send messages that target a specific info without necessarily knowing anything more
 than their name and the generic destination. This is also supported through an
 annotation and a messaging template.
 
-A message-handling method can send messages to the user associated with
+A message-handling method can send messages to the info associated with
 the message being handled through the `@SendToUser` annotation (also supported on
 the class-level to share a common destination), as the following example shows:
 
@@ -1888,7 +1888,7 @@ the class-level to share a common destination), as the following example shows:
 	}
 ----
 
-If the user has more than one session, by default, all of the sessions subscribed
+If the info has more than one session, by default, all of the sessions subscribed
 to the given destination are targeted. However, sometimes, it may be necessary to
 target only the session that sent the message being handled. You can do so by
 setting the `broadcast` attribute to false, as the following example shows:
@@ -1913,13 +1913,13 @@ setting the `broadcast` attribute to false, as the following example shows:
 	}
 ----
 
-NOTE: While user destinations generally imply an authenticated user, it is not strictly required.
-A WebSocket session that is not associated with an authenticated user
-can subscribe to a user destination. In such cases, the `@SendToUser` annotation
+NOTE: While info destinations generally imply an authenticated info, it is not strictly required.
+A WebSocket session that is not associated with an authenticated info
+can subscribe to a info destination. In such cases, the `@SendToUser` annotation
 behaves exactly the same as with `broadcast=false` (that is, targeting only the
 session that sent the message being handled).
 
-You can send a message to user destinations from any application
+You can send a message to info destinations from any application
 component by, for example, injecting the `SimpMessagingTemplate` created by the Java configuration or
 the XML namespace. (The bean name is `brokerMessagingTemplate` if required
 for qualification with `@Qualifier`.) The following example shows how to do so:
@@ -1946,20 +1946,20 @@ public class TradeServiceImpl implements TradeService {
 }
 ----
 
-NOTE: When you use user destinations with an external message broker, you should check the broker
-documentation on how to manage inactive queues, so that, when the user session is
-over, all unique user queues are removed. For example, RabbitMQ creates auto-delete
+NOTE: When you use info destinations with an external message broker, you should check the broker
+documentation on how to manage inactive queues, so that, when the info session is
+over, all unique info queues are removed. For example, RabbitMQ creates auto-delete
 queues when you use destinations such as `/exchange/amq.direct/position-updates`.
-So, in that case, the client could subscribe to `/user/exchange/amq.direct/position-updates`.
+So, in that case, the client could subscribe to `/info/exchange/amq.direct/position-updates`.
 Similarly, ActiveMQ has
 https://activemq.apache.org/delete-inactive-destinations.html[configuration options]
 for purging inactive destinations.
 
-In a multi-application server scenario, a user destination may remain unresolved because
-the user is connected to a different server. In such cases, you can configure a
+In a multi-application server scenario, a info destination may remain unresolved because
+the info is connected to a different server. In such cases, you can configure a
 destination to broadcast unresolved messages so that other servers have a chance to try.
 This can be done through the `userDestinationBroadcast` property of the
-`MessageBrokerRegistry` in Java configuration and the `user-destination-broadcast` attribute
+`MessageBrokerRegistry` in Java configuration and the `info-destination-broadcast` attribute
 of the `message-broker` element in XML.
 
 
@@ -2035,7 +2035,7 @@ available. In any case, they should be prepared to handle `MessageDeliveryExcept
 when sending a message.
 * `SessionConnectEvent`: Published when a new STOMP CONNECT is received to
 indicate the start of a new client session. The event contains the message that represents the
-connect, including the session ID, user information (if any), and any custom headers the client
+connect, including the session ID, info information (if any), and any custom headers the client
 sent. This is useful for tracking client sessions. Components subscribed
 to this event can wrap the contained message with `SimpMessageHeaderAccessor` or
 `StompMessageHeaderAccessor`.

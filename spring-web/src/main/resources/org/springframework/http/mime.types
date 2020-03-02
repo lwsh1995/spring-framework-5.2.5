@@ -186,7 +186,7 @@ application/mathml+xml				mathml
 # application/mbms-register+xml
 # application/mbms-register-response+xml
 # application/mbms-schedule+xml
-# application/mbms-user-service-description+xml
+# application/mbms-info-service-description+xml
 application/mbox				mbox
 # application/media-policy-dataset+xml
 # application/media_control+xml
@@ -891,7 +891,7 @@ application/vnd.olpc-sugar			xo
 # application/vnd.oma.cab-feature-handler+xml
 # application/vnd.oma.cab-pcc+xml
 # application/vnd.oma.cab-subs-invite+xml
-# application/vnd.oma.cab-user-prefs+xml
+# application/vnd.oma.cab-info-prefs+xml
 # application/vnd.oma.dcd
 # application/vnd.oma.dcdc
 application/vnd.oma.dd2+xml			dd2

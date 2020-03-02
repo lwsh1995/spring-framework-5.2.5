@@ -150,7 +150,7 @@
 				<prop key="mail.smtp.auth">true</prop>
 				<prop key="mail.smtp.host"></prop>
 				<prop key="mail.smtp.port"></prop>
-				<prop key="mail.smtp.user">someuser</prop>
+				<prop key="mail.smtp.info">someuser</prop>
 				<prop key="mail.smtp.password">somepw</prop>
 			</props>
 		</constructor-arg>

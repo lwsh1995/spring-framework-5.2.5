@@ -13,8 +13,8 @@
 									  system-login="syslogin" system-passcode="syspass"
 									  heartbeat-send-interval="5000" heartbeat-receive-interval="5000"
 									  virtual-host="spring.io"
-									  user-destination-broadcast="/topic/unresolved-user-destination"
-									  user-registry-broadcast="/topic/simp-user-registry"/>
+									  info-destination-broadcast="/topic/unresolved-info-destination"
+									  info-registry-broadcast="/topic/simp-info-registry"/>
 	</websocket:message-broker>
 
 	<bean id="myHandler" class="org.springframework.web.socket.config.TestWebSocketHandler"/>

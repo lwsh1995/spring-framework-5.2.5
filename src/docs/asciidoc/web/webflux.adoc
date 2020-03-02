@@ -1710,7 +1710,7 @@ under different URLs. The following example shows how to do so:
 				throws NoSuchMethodException {
 
 			RequestMappingInfo info = RequestMappingInfo
-					.paths("/user/{id}").methods(RequestMethod.GET).build(); // <2>
+					.paths("/info/{id}").methods(RequestMethod.GET).build(); // <2>
 
 			Method method = UserHandler.class.getMethod("getUser", Long.class); // <3>
 
@@ -1733,7 +1733,7 @@ under different URLs. The following example shows how to do so:
 		@Autowired
 		fun setHandlerMapping(mapping: RequestMappingHandlerMapping, handler: UserHandler) { // <1>
 
-			val info = RequestMappingInfo.paths("/user/{id}").methods(RequestMethod.GET).build() // <2>
+			val info = RequestMappingInfo.paths("/info/{id}").methods(RequestMethod.GET).build() // <2>
 
 			val method = UserHandler::class.java.getMethod("getUser", Long::class.java) // <3>
 
@@ -1787,7 +1787,7 @@ and others) and is equivalent to `required=false`.
   are added. Supports reactive types.
 
 | `java.security.Principal`
-| The currently authenticated user -- possibly a specific `Principal` implementation class if known.
+| The currently authenticated info -- possibly a specific `Principal` implementation class if known.
   Supports reactive types.
 
 | `org.springframework.http.HttpMethod`
@@ -2520,7 +2520,7 @@ you can use the `@SessionAttribute` annotation on a method parameter, as the fol
 .Java
 ----
 	@GetMapping("/")
-	public String handle(@SessionAttribute User user) { // <1>
+	public String handle(@SessionAttribute User info) { // <1>
 		// ...
 	}
 ----
@@ -2530,7 +2530,7 @@ you can use the `@SessionAttribute` annotation on a method parameter, as the fol
 .Kotlin
 ----
 	@GetMapping("/")
-	fun handle(@SessionAttribute user: User): String { // <1>
+	fun handle(@SessionAttribute info: User): String { // <1>
 		// ...
 	}
 ----
@@ -2965,7 +2965,7 @@ which allows rendering only a subset of all fields in an `Object`. To use it wit
 	@RestController
 	public class UserController {
 
-		@GetMapping("/user")
+		@GetMapping("/info")
 		@JsonView(User.WithoutPasswordView.class)
 		public User getUser() {
 			return new User("eric", "7!jd#h23");
@@ -3006,7 +3006,7 @@ which allows rendering only a subset of all fields in an `Object`. To use it wit
 	@RestController
 	class UserController {
 
-		@GetMapping("/user")
+		@GetMapping("/info")
 		@JsonView(User.WithoutPasswordView::class)
 		fun getUser(): User {
 			return User("eric", "7!jd#h23")

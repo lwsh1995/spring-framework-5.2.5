@@ -320,7 +320,7 @@ the `AccountService` to manage accounts, as the following example shows:
 One of the advantages of Hessian is that we can easily apply HTTP basic authentication,
 because both protocols are HTTP-based. Your normal HTTP server security mechanism can
 be applied through using the `web.xml` security features, for example. Usually,
-you need not use per-user security credentials here. Rather, you can use shared credentials that you define
+you need not use per-info security credentials here. Rather, you can use shared credentials that you define
 at the `HessianProxyFactoryBean` level (similar to a JDBC `DataSource`), as the following example shows:
 
 [source,xml,indent=0]
@@ -1205,7 +1205,7 @@ to serialize only a subset of the object properties, as the following example sh
 	value.setSerializationView(User.WithoutPasswordView.class);
 
 	RequestEntity<MappingJacksonValue> requestEntity =
-		RequestEntity.post(new URI("https://example.com/user")).body(value);
+		RequestEntity.post(new URI("https://example.com/info")).body(value);
 
 	ResponseEntity<String> response = template.exchange(requestEntity, String.class);
 ----
@@ -1490,10 +1490,10 @@ JMS. It contains JMS template classes that simplify the use of the JMS by handli
 creation and release of resources, much like the `JdbcTemplate` does for JDBC. The
 design principle common to Spring template classes is to provide helper methods to
 perform common operations and, for more sophisticated usage, delegate the essence of the
-processing task to user-implemented callback interfaces. The JMS template follows the
+processing task to info-implemented callback interfaces. The JMS template follows the
 same design. The classes offer various convenience methods for sending messages,
 consuming messages synchronously, and exposing the JMS session and message producer to
-the user.
+the info.
 
 The `org.springframework.jms.support` package provides `JMSException` translation
 functionality. The translation converts the checked `JMSException` hierarchy to a
@@ -1669,7 +1669,7 @@ therefore, cannot be administratively created when the application is deployed. 
 often because there is shared application logic between interacting system components
 that create destinations at runtime according to a well-known naming convention. Even
 though the creation of dynamic destinations is not part of the JMS specification, most
-vendors have provided this functionality. Dynamic destinations are created with a user-defined name,
+vendors have provided this functionality. Dynamic destinations are created with a info-defined name,
 which differentiates them from temporary destinations, and are often
 not registered in JNDI. The API used to create dynamic destinations varies from provider
 to provider since the properties associated with the destination are vendor-specific.
@@ -1696,7 +1696,7 @@ operations that do not refer to a specific destination.
 
 One of the most common uses of JMS messages in the EJB world is to drive message-driven
 beans (MDBs). Spring offers a solution to create message-driven POJOs (MDPs) in a way
-that does not tie a user to an EJB container. (See <<jms-receiving-async>> for detailed
+that does not tie a info to an EJB container. (See <<jms-receiving-async>> for detailed
 coverage of Spring's MDP support.) Since Spring Framework 4.1, endpoint methods can be
 annotated with `@JmsListener` -- see <<jms-annotated>> for more details.
 
@@ -4305,7 +4305,7 @@ Spring provides support not only for registering to receive `Notifications` but 
 for publishing `Notifications`.
 
 NOTE: This section is really only relevant to Spring-managed beans that have
-been exposed as MBeans through an `MBeanExporter`. Any existing user-defined MBeans should
+been exposed as MBeans through an `MBeanExporter`. Any existing info-defined MBeans should
 use the standard JMX APIs for notification publication.
 
 The key interface in Spring's JMX notification publication support is the
@@ -4559,7 +4559,7 @@ The following example shows how to configure a `ConnectionSpecConnectionFactoryA
 		<property name="targetConnectionFactory" ref="targetConnectionFactory"/>
 		<property name="connectionSpec">
 			<bean class="com.sun.connector.cciblackbox.CciConnectionSpec">
-				<property name="user" value="sa"/>
+				<property name="info" value="sa"/>
 				<property name="password" value=""/>
 			</bean>
 		</property>
@@ -5349,7 +5349,7 @@ The corresponding configuration of Spring beans could be as follows in non-manag
 		<property name="targetConnectionFactory" ref="targetConnectionFactory"/>
 		<property name="connectionSpec">
 			<bean class="com.sun.connector.cciblackbox.CciConnectionSpec">
-				<property name="user" value="sa"/>
+				<property name="info" value="sa"/>
 				<property name="password" value=""/>
 			</bean>
 		</property>
@@ -5373,7 +5373,7 @@ follows:
 		<property name="targetConnectionFactory" ref="targetConnectionFactory"/>
 		<property name="connectionSpec">
 			<bean class="com.sun.connector.cciblackbox.CciConnectionSpec">
-				<property name="user" value="sa"/>
+				<property name="info" value="sa"/>
 				<property name="password" value=""/>
 			</bean>
 		</property>
@@ -6789,7 +6789,7 @@ a targeted method is invoked, the abstraction applies a caching behavior that ch
 whether the method has been already executed for the given arguments. If it has been
 executed, the cached result is returned without having to execute the actual method.
 If the method has not been executed, then it is executed, and the result is cached and
-returned to the user so that, the next time the method is invoked, the cached result is
+returned to the info so that, the next time the method is invoked, the cached result is
 returned. This way, expensive methods (whether CPU- or IO-bound) can be executed only
 once for a given set of parameters and the result reused without having to actually
 execute the method again. The caching logic is applied transparently without any

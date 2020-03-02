@@ -105,7 +105,7 @@ on its specific integration strategies.
 == JSF
 
 JavaServer Faces (JSF) is the JCP's standard component-based, event-driven web
-user interface framework. It is an official part of the Java EE umbrella but also
+info interface framework. It is an official part of the Java EE umbrella but also
 individually usable, e.g. through embedding Mojarra or MyFaces within Tomcat.
 
 Please note that recent versions of JSF became closely tied to CDI infrastructure
@@ -186,7 +186,7 @@ dynamic, robust, highly scalable web applications in Java.""
 
 While Spring has its own <<mvc, powerful web layer>>, there are a number of unique
 advantages to building an enterprise Java application by using a combination of Tapestry
-for the web user interface and the Spring container for the lower layers.
+for the web info interface and the Spring container for the lower layers.
 
 For more information, see Tapestry's dedicated
 https://tapestry.apache.org/integrating-with-spring-framework.html[integration module for Spring].
