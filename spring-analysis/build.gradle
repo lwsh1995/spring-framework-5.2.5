@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group 'io.spring.asciidoctor'
+version '5.2.5.BUILD-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile files('../spring-core/kotlin-coroutines/build/libs/kotlin-coroutines-5.2.5.BUILD-SNAPSHOT.jar')
+    compile(project(":spring-aop"))
+    compile(project(":spring-beans"))
+    compile(project(":spring-core"))
+    compile(project(":spring-oxm"))
+    compile(project(":spring-context-support"))
+    compile(project(":spring-expression"))
+    compile(project(":spring-jcl"))
+    compile(project(":spring-instrument"))
+    compile(project(":spring-context"))  // for JCA, @EnableTransactionManagement
+    compile(project(":spring-tx"))  // for JPA, @Transactional support
+    compile(project(":spring-jdbc"))  // for Quartz support
+    compile(project(":spring-tx"))  // for Quartz support
+    compile(project(":spring-web"))
+    compile(project(":spring-webmvc"))
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
