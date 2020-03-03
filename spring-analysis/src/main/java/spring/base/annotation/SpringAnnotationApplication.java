@@ -14,6 +14,7 @@ public class SpringAnnotationApplication {
 		context.refresh();
 		Info info1 = context.getBean("info1", Info.class);
 		Info info2 = context.getBean("info2", Info.class);
+		context.close();
 		System.out.println(info1.toString()+info2.toString());
 	}
 }

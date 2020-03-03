@@ -1,24 +1,21 @@
 package spring.base.annotation.domain;
 
-public class Info {
+
+import lombok.Data;
+import lombok.ToString;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+
+@Data
+public class Info implements InitializingBean, DisposableBean {
 	private String name;
 	private Integer version;
 
-	public Info() {
-		System.out.println("info parent");
-	}
+	private String properties;
 
 	public Info(String name, Integer version) {
 		this.name = name;
 		this.version = version;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public Integer getVersion() {
-		return version;
 	}
 
 	@Override
@@ -26,6 +23,17 @@ public class Info {
 		return "Info{" +
 				"name='" + name + '\'' +
 				", version=" + version +
+				", properties='" + properties + '\'' +
 				'}';
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		this.properties="initializing bean";
+	}
+
+	@Override
+	public void destroy() throws Exception {
+		System.out.println("destroy bean");
 	}
 }
