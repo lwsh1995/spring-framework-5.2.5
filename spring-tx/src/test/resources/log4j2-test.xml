@@ -7,7 +7,7 @@
 	</Appenders>
 	<Loggers>
 		<Logger name="org.springframework.beans" level="warn" />
-		<Logger name="org.springframework.transaction" level="info" />
+		<Logger name="org.springframework.transaction" level="infoBean" />
 		<Root level="error">
 			<AppenderRef ref="Console" />
 		</Root>

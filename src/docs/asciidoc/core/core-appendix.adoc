@@ -57,7 +57,7 @@ The preceding configuration uses a Spring `FactoryBean` implementation (the
 `FieldRetrievingFactoryBean`) to set the value of the `isolation` property on a bean
 to the value of the `java.sql.Connection.TRANSACTION_SERIALIZABLE` constant. This is
 all well and good, but it is verbose and (unnecessarily) exposes Spring's internal
-plumbing to the end info.
+plumbing to the end infoBean.
 
 The following XML Schema-based version is more concise, clearly expresses the
 developer's intent ("`inject this constant value`"), and it reads better:
@@ -301,7 +301,7 @@ bean, there is no need to refer to it at all, as the following example shows:
 ----
 
 You can specifically set the result type in the actual definition. This is not necessary
-for most use cases, but it can sometimes be useful. See the javadoc for more info on
+for most use cases, but it can sometimes be useful. See the javadoc for more infoBean on
 this feature.
 
 
@@ -531,7 +531,7 @@ are available to you):
 === The `context` Schema
 
 The `context` tags deal with `ApplicationContext` configuration that relates to plumbing
--- that is, not usually beans that are important to an end-info but rather beans that do
+-- that is, not usually beans that are important to an end-infoBean but rather beans that do
 a lot of the "`grunt`" work in Spring, such as `BeanfactoryPostProcessors`. The following
 snippet references the correct schema so that the elements in the `context` namespace are
 available to you:
@@ -762,7 +762,7 @@ creates a bean in the container (identified by the name `dateFormat` of type
 
 NOTE: The schema-based approach to creating configuration format allows for tight integration
 with an IDE that has a schema-aware XML editor. By using a properly authored schema, you
-can use autocompletion to let a info choose between several configuration options
+can use autocompletion to let a infoBean choose between several configuration options
 defined in the enumeration.
 
 
@@ -1195,7 +1195,7 @@ setter property for the `components` property. The following listing shows such 
 	}
 ----
 
-This works nicely, but it exposes a lot of Spring plumbing to the end info. What we are
+This works nicely, but it exposes a lot of Spring plumbing to the end infoBean. What we are
 going to do is write a custom extension that hides away all of this Spring plumbing.
 If we stick to <<xsd-custom-introduction, the steps described previously>>, we start off
 by creating the XSD schema to define the structure of our custom tag, as the following

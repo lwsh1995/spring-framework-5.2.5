@@ -1,1 +1,1 @@
-INSERT INTO info VALUES('Dogbert');
+INSERT INTO infoBean VALUES('Dogbert');

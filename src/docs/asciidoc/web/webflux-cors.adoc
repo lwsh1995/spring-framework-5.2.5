@@ -130,7 +130,7 @@ By default, `@CrossOrigin` allows:
 
 
 `allowedCredentials` is not enabled by default, since that establishes a trust level
-that exposes sensitive info-specific information (such as cookies and CSRF tokens) and
+that exposes sensitive infoBean-specific information (such as cookies and CSRF tokens) and
 should be used only where appropriate.
 
 `maxAge` is set to 30 minutes.
@@ -244,7 +244,7 @@ By default global configuration enables the following:
 * `GET`, `HEAD`, and `POST` methods.
 
 `allowedCredentials` is not enabled by default, since that establishes a trust level
-that exposes sensitive info-specific information( such as cookies and CSRF tokens) and
+that exposes sensitive infoBean-specific information( such as cookies and CSRF tokens) and
 should be used only where appropriate.
 
 `maxAge` is set to 30 minutes.

@@ -97,9 +97,9 @@
   	<auth-constraint>
   	<role-name>registeredUsers</role-name>
   	</auth-constraint>
-  	<info-data-constraint>
+  	<infoBean-data-constraint>
   	<transport-guarantee>NONE</transport-guarantee>
-  	</info-data-constraint>
+  	</infoBean-data-constraint>
 </security-constraint>
 
 

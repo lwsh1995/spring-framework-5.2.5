@@ -419,7 +419,7 @@ For more information, see <<beans-autowired-annotation>>.
 If the bean itself is going to determine and supply the resource path through some sort
 of dynamic process, it probably makes sense for the bean to use the `ResourceLoader`
 interface to load resources. For example, consider the loading of a template of some
-sort, where the specific resource that is needed depends on the role of the info. If the
+sort, where the specific resource that is needed depends on the role of the infoBean. If the
 resources are static, it makes sense to eliminate the use of the `ResourceLoader`
 interface completely, have the bean expose the `Resource` properties it needs,
 and expect them to be injected into it.

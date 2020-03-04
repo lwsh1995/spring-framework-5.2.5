@@ -1,9 +1,9 @@
-DROP TABLE info IF EXISTS;
+DROP TABLE infoBean IF EXISTS;
 
-CREATE TABLE info (
+CREATE TABLE infoBean (
   name VARCHAR(20) NOT NULL,
   PRIMARY KEY(name)
 );
 
-INSERT INTO info VALUES('Dilbert');
-INSERT INTO info VALUES('Dogbert');
+INSERT INTO infoBean VALUES('Dilbert');
+INSERT INTO infoBean VALUES('Dogbert');

@@ -1,6 +1,6 @@
-DROP TABLE info IF EXISTS;
+DROP TABLE infoBean IF EXISTS;
 
-CREATE TABLE info (
+CREATE TABLE infoBean (
   name VARCHAR(20) NOT NULL,
   PRIMARY KEY(name)
 );

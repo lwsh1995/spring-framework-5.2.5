@@ -9,7 +9,7 @@
 		</File>
 	</Appenders>
 	<Loggers>
-		<Logger name="org.junit.platform" level="info" />
+		<Logger name="org.junit.platform" level="infoBean" />
 		<Logger name="org.springframework.test.context" level="warn" />
 		<Logger name="org.springframework.test.context.TestContext" level="warn" />
 		<Logger name="org.springframework.test.context.TestContextManager" level="warn" />
@@ -21,10 +21,10 @@
 		<!-- The following must be kept at DEBUG in order to test SPR-14363. -->
 		<Logger name="org.springframework.test.util" level="debug" />
 <!--
-		<Logger name="org.springframework.test.context.support" level="info" />
-		<Logger name="org.springframework.test.context.support.DelegatingSmartContextLoader" level="info" />
-		<Logger name="org.springframework.test.context.support.AbstractGenericContextLoader" level="info" />
-		<Logger name="org.springframework.test.context.support.AnnotationConfigContextLoader" level="info" />
+		<Logger name="org.springframework.test.context.support" level="infoBean" />
+		<Logger name="org.springframework.test.context.support.DelegatingSmartContextLoader" level="infoBean" />
+		<Logger name="org.springframework.test.context.support.AbstractGenericContextLoader" level="infoBean" />
+		<Logger name="org.springframework.test.context.support.AnnotationConfigContextLoader" level="infoBean" />
 		<Logger name="org.springframework.test.context.support.TestPropertySourceUtils" level="trace" />
 		<Logger name="org.springframework.beans" level="warn" />
 		<Logger name="org.springframework.test.web.servlet.result" level="debug" />

@@ -2,7 +2,7 @@ List of outstanding things to think about - turn into tickets once distilled to 
 
 High Importance
 
-- In the resolver/executor model we cache executors.  They are currently recorded in the AST and so if the info chooses to evaluate an expression
+- In the resolver/executor model we cache executors.  They are currently recorded in the AST and so if the infoBean chooses to evaluate an expression
 in a different context then the stored executor may be incorrect.  It may harmless 'fail' which would cause us to retrieve a new one, but 
 can it do anything malicious? In which case we either need to forget them when the context changes or store them elsewhere.  Should caching be
 something that can be switched on/off by the context? (shouldCacheExecutors() on the interface?)
@@ -34,7 +34,7 @@ Syntax
   // https://java.sun.com/j2se/1.4.2/docs/api/java/text/SimpleDateFormat.html
 - See LiteralTests for Date (4,5,6) - should date take an expression rather than be hardcoded in the grammar
   to take 2 strings only?
-- when doing arithmetic, eg. 8.4 / 4  and the info asks for an Integer return type - do we silently coerce or
+- when doing arithmetic, eg. 8.4 / 4  and the infoBean asks for an Integer return type - do we silently coerce or
   say we cannot as it won't fit into an int? (see OperatorTests.testMathOperatorDivide04)
 - Is $index within projection/selection useful or just cute?
 - All reals are represented as Doubles (so 1.25f is held internally as a double, can be converted to float when required though) - is that ok?

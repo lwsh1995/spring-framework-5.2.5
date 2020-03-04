@@ -17,7 +17,7 @@
 			Simple bean, without any collections.
 		</description>
 		<property name="name">
-			<description>The name of the info</description>
+			<description>The name of the infoBean</description>
 			<value>David</value>
 		</property>
 		<property name="age"><value>27</value></property>

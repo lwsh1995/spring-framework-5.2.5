@@ -60,7 +60,7 @@
 <!--
 	Element containing informative text describing the purpose of the enclosing
 	element. Always optional.
-	Used primarily for info documentation of XML bean definition documents.
+	Used primarily for infoBean documentation of XML bean definition documents.
 -->
 <!ELEMENT description (#PCDATA)>
 

@@ -31,7 +31,7 @@ tokens {
 @lexer::header {package org.springframework.expression.spel.generated;}
 
 @members {
-  // For collecting info whilst processing rules that can be used in messages
+  // For collecting infoBean whilst processing rules that can be used in messages
   protected Stack<String> paraphrase = new Stack<String>();
 }
   
@@ -127,7 +127,7 @@ methodOrProperty
 // TODO need to preserve commas and then check for badly formed call later (optimizing tree walk) to disallow "foo(a,b,c,)"
 methodArgs :  LPAREN! (argument (COMMA! argument)* (COMMA!)?)? RPAREN!;
 
-// If we match ID then create a node called PROPERTY_OR_FIELD and copy the id info into it.
+// If we match ID then create a node called PROPERTY_OR_FIELD and copy the id infoBean into it.
 // this means the propertyOrField.text is what id.text would have been, rather than having to
 // access id as a child of the new node.
 property: id=ID -> ^(PROPERTY_OR_FIELD[$id]);

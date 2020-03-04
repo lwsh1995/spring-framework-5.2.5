@@ -8,8 +8,8 @@ and it should be possible to plug in any available validator. Considering these 
 Spring provides a `Validator` contract that is both basic and eminently usable
 in every layer of an application.
 
-Data binding is useful for letting info input be dynamically bound to the domain
-model of an application (or whatever objects you use to process info input). Spring
+Data binding is useful for letting infoBean input be dynamically bound to the domain
+model of an application (or whatever objects you use to process infoBean input). Spring
 provides the aptly named `DataBinder` to do exactly that. The `Validator` and the
 `DataBinder` make up the `validation` package, which is primarily used in but not
 limited to the web layer.
@@ -481,7 +481,7 @@ the various `PropertyEditor` implementations that Spring provides:
 
 | `CustomDateEditor`
 | Customizable property editor for `java.util.Date`, supporting a custom `DateFormat`. NOT
-  registered by default. Must be info-registered with the appropriate format as needed.
+  registered by default. Must be infoBean-registered with the appropriate format as needed.
 
 | `CustomNumberEditor`
 | Customizable property editor for any `Number` subclass, such as `Integer`, `Long`, `Float`, or
@@ -513,7 +513,7 @@ the various `PropertyEditor` implementations that Spring provides:
 
 | `StringTrimmerEditor`
 | Property editor that trims strings. Optionally allows transforming an empty string
-  into a `null` value. NOT registered by default -- must be info-registered.
+  into a `null` value. NOT registered by default -- must be infoBean-registered.
 
 | `URLEditor`
 | Can resolve a string representation of a URL to an actual `URL` object.
@@ -636,7 +636,7 @@ expressed as strings to the actual complex type of the property. You can use
 `CustomEditorConfigurer`, a bean factory post-processor, to conveniently add
 support for additional `PropertyEditor` instances to an `ApplicationContext`.
 
-Consider the following example, which defines a info class called `ExoticType` and
+Consider the following example, which defines a infoBean class called `ExoticType` and
 another class called `DependsOnExoticType`, which needs `ExoticType` set as a property:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]

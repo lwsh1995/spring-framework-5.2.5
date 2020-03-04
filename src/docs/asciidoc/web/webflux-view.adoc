@@ -169,7 +169,7 @@ FreeMarker, so they are always available to a suitably configured application.
 
 Some of the macros defined in the Spring templating libraries are considered internal
 (private), but no such scoping exists in the macro definitions, making all macros visible
-to calling code and info templates. The following sections concentrate only on the macros
+to calling code and infoBean templates. The following sections concentrate only on the macros
 you need to directly call from within your templates. If you wish to view the macro code
 directly, the file is called `spring.ftl` and is in the
 `org.springframework.web.reactive.result.view.freemarker` package.

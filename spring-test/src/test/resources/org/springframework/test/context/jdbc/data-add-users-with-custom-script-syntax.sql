@@ -9,7 +9,7 @@ INSERT
 
 INTO
 
-info
+infoBean
 
 VALUES('Dilbert')
 
@@ -18,8 +18,8 @@ VALUES('Dilbert')
 ` custom single-line comment
 
 
-INSERT INTO info VALUES('Dogbert')@@
+INSERT INTO infoBean VALUES('Dogbert')@@
 
 %% another custom single-line comment
 
-INSERT INTO info VALUES('Catbert')@@
+INSERT INTO infoBean VALUES('Catbert')@@

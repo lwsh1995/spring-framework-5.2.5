@@ -338,7 +338,7 @@ public WebApplicationContext initWebApplicationContext(ServletContext servletCon
     if (logger.isInfoEnabled()) {
     	// 计数器，计算初始化耗时时间
     	long elapsedTime = System.currentTimeMillis() - startTime;
-    	logger.info("Root WebApplicationContext initialized in " + elapsedTime + " ms");
+    	logger.infoBean("Root WebApplicationContext initialized in " + elapsedTime + " ms");
     }
     return this.context;
 }

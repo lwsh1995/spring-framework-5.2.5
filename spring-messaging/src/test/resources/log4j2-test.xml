@@ -7,9 +7,9 @@
 	</Appenders>
 	<Loggers>
 		<Logger name="org.springframework.messaging" level="warn" />
-		<Logger name="org.apache.activemq" level="info" />
-		<Logger name="reactor" level="info" />
-		<Logger name="io.netty" level="info" />
+		<Logger name="org.apache.activemq" level="infoBean" />
+		<Logger name="reactor" level="infoBean" />
+		<Logger name="io.netty" level="infoBean" />
 		<!-- Enable TRACE level to chase integration test issues on CI servers -->
 <!--
 		<Logger name="org.springframework.messaging.simp.stomp" level="trace" />

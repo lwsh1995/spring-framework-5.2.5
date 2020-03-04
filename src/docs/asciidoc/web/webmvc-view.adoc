@@ -169,7 +169,7 @@ FreeMarker, so they are always available to a suitably configured application.
 
 Some of the macros defined in the Spring templating libraries are considered internal
 (private), but no such scoping exists in the macro definitions, making all macros visible
-to calling code and info templates. The following sections concentrate only on the macros
+to calling code and infoBean templates. The following sections concentrate only on the macros
 you need to directly call from within your templates. If you wish to view the macro code
 directly, the file is called `spring.ftl` and is in the
 `org.springframework.web.servlet.view.freemarker` package.
@@ -246,10 +246,10 @@ and the parameter list that each takes:
 | `url` (prefix a relative URL with the application's context root)
 | <@spring.url relativeUrl/>
 
-| `formInput` (standard input field for gathering info input)
+| `formInput` (standard input field for gathering infoBean input)
 | <@spring.formInput path, attributes, fieldType/>
 
-| `formHiddenInput` (hidden input field for submitting non-info input)
+| `formHiddenInput` (hidden input field for submitting non-infoBean input)
 | <@spring.formHiddenInput path, attributes/>
 
 | `formPasswordInput` (standard input field for gathering passwords. Note that no
@@ -263,7 +263,7 @@ and the parameter list that each takes:
   selected)
 | <@spring.formSingleSelect path, options, attributes/>
 
-| `formMultiSelect` (a list box of options that let the info select 0 or more values)
+| `formMultiSelect` (a list box of options that let the infoBean select 0 or more values)
 | <@spring.formMultiSelect path, options, attributes/>
 
 | `formRadioButtons` (a set of radio buttons that let a single selection be made
@@ -290,7 +290,7 @@ The parameters to any of the above macros have consistent meanings:
 * `options`: A `Map` of all the available values that can be selected from in the input
   field. The keys to the map represent the values that are POSTed back from the form
   and bound to the command object. Map objects stored against the keys are the labels
-  displayed on the form to the info and may be different from the corresponding values
+  displayed on the form to the infoBean and may be different from the corresponding values
   posted back by the form. Usually, such a map is supplied as reference data by the
   controller. You can use any `Map` implementation, depending on required behavior.
   For strictly sorted maps, you can use a `SortedMap` (such as a `TreeMap`) with a
@@ -381,7 +381,7 @@ The preceding listing renders a line of radio buttons, one for each value in `ci
 separator of `""`. No additional attributes are supplied (the last parameter to the macro is
 missing). The `cityMap` uses the same `String` for each key-value pair in the map. The map's
 keys are what the form actually submits as `POST` request parameters. The map values are the
-labels that the info sees. In the preceding example, given a list of three well known cities
+labels that the infoBean sees. In the preceding example, given a list of three well known cities
 and a default value in the form backing object, the HTML resembles the following:
 
 [source,jsp,indent=0,subs="verbatim,quotes"]
@@ -423,7 +423,7 @@ codes with suitable keys, as the following example shows:
 ----
 
 The code now produces output where the radio values are the relevant codes, but the
-info still sees the more info-friendly city names, as follows:
+infoBean still sees the more infoBean-friendly city names, as follows:
 
 [source,jsp,indent=0,subs="verbatim,quotes"]
 ----
@@ -999,7 +999,7 @@ following example shows:
 
 [source,xml,indent=0,subs="verbatim,quotes"]
 ----
-	<form:form modelAttribute="info">
+	<form:form modelAttribute="infoBean">
 		<table>
 			<tr>
 				<td>First Name:</td>
@@ -1161,7 +1161,7 @@ not to have to list all the possible hobbies in your JSP page. You would rather 
 a list at runtime of the available options and pass that in to the tag. That is the
 purpose of the `checkboxes` tag. You can pass in an `Array`, a `List`, or a `Map` that contains
 the available options in the `items` property. Typically, the bound property is a
-collection so that it can hold multiple values selected by the info. The following example
+collection so that it can hold multiple values selected by the infoBean. The following example
 shows a JSP that uses this tag:
 
 [source,xml,indent=0,subs="verbatim,quotes"]
@@ -1944,7 +1944,7 @@ This section describes how to use those features.
 [[mvc-view-document-intro]]
 === Introduction to Document Views
 
-An HTML page is not always the best way for the info to view the model output,
+An HTML page is not always the best way for the infoBean to view the model output,
 and Spring makes it simple to generate a PDF document or an Excel spreadsheet
 dynamically from the model data. The document is the view and is streamed from the
 server with the correct content type, to (hopefully) enable the client PC to run their

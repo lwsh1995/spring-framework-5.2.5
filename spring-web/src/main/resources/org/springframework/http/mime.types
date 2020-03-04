@@ -68,7 +68,7 @@ application/cdmi-queue				cdmiq
 # application/cnrp+xml
 # application/coap-group+json
 # application/commonground
-# application/conference-info+xml
+# application/conference-infoBean+xml
 # application/cpl+xml
 # application/csrattrs
 # application/csta+xml
@@ -82,7 +82,7 @@ application/davmount+xml			davmount
 # application/dca-rft
 # application/dcd
 # application/dec-dx
-# application/dialog-info+xml
+# application/dialog-infoBean+xml
 # application/dicom
 # application/dii
 # application/dit
@@ -186,7 +186,7 @@ application/mathml+xml				mathml
 # application/mbms-register+xml
 # application/mbms-register-response+xml
 # application/mbms-schedule+xml
-# application/mbms-info-service-description+xml
+# application/mbms-infoBean-service-description+xml
 application/mbox				mbox
 # application/media-policy-dataset+xml
 # application/media_control+xml
@@ -300,7 +300,7 @@ application/scvp-vp-response			spp
 application/sdp					sdp
 # application/sep+xml
 # application/sep-exi
-# application/session-info
+# application/session-infoBean
 # application/set-payment
 application/set-payment-initiation		setpay
 # application/set-registration
@@ -365,8 +365,8 @@ application/vnd.3gpp.pic-bw-var			pvb
 # application/vnd.3gpp.sms
 # application/vnd.3gpp.sms+xml
 # application/vnd.3gpp.srvcc-ext+xml
-# application/vnd.3gpp.srvcc-info+xml
-# application/vnd.3gpp.state-and-event-info+xml
+# application/vnd.3gpp.srvcc-infoBean+xml
+# application/vnd.3gpp.state-and-event-infoBean+xml
 # application/vnd.3gpp.ussd+xml
 # application/vnd.3gpp2.bcmcsinfo+xml
 # application/vnd.3gpp2.sms
@@ -891,7 +891,7 @@ application/vnd.olpc-sugar			xo
 # application/vnd.oma.cab-feature-handler+xml
 # application/vnd.oma.cab-pcc+xml
 # application/vnd.oma.cab-subs-invite+xml
-# application/vnd.oma.cab-info-prefs+xml
+# application/vnd.oma.cab-infoBean-prefs+xml
 # application/vnd.oma.dcd
 # application/vnd.oma.dcdc
 application/vnd.oma.dd2+xml			dd2
@@ -1310,7 +1310,7 @@ application/x-pkcs12				p12 pfx
 application/x-pkcs7-certificates		p7b spc
 application/x-pkcs7-certreqresp			p7r
 application/x-rar-compressed			rar
-application/x-research-info-systems		ris
+application/x-research-infoBean-systems		ris
 application/x-sh				sh
 application/x-shar				shar
 application/x-shockwave-flash			swf
@@ -1347,8 +1347,8 @@ application/xcap-diff+xml			xdf
 # application/xcap-el+xml
 # application/xcap-error+xml
 # application/xcap-ns+xml
-# application/xcon-conference-info+xml
-# application/xcon-conference-info-diff+xml
+# application/xcon-conference-infoBean+xml
+# application/xcon-conference-infoBean-diff+xml
 application/xenc+xml				xenc
 application/xhtml+xml				xhtml xht
 # application/xhtml-voice+xml

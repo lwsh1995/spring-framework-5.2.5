@@ -9,9 +9,9 @@
 		<Logger name="org.springframework.core.codec" level="debug" />
 		<Logger name="org.springframework.http" level="debug" />
 		<Logger name="org.springframework.web" level="debug" />
-		<Logger name="reactor" level="info" />
-		<Logger name="io.reactivex" level="info" />
-		<Root level="info">
+		<Logger name="reactor" level="infoBean" />
+		<Logger name="io.reactivex" level="infoBean" />
+		<Root level="infoBean">
 			<AppenderRef ref="Console" />
 		</Root>
 	</Loggers>

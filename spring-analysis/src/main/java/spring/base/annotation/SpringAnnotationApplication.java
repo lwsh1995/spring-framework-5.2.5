@@ -1,7 +1,8 @@
 package spring.base.annotation;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import spring.base.annotation.domain.Info;
+import spring.base.annotation.domain.AwareBean;
+import spring.base.annotation.domain.InfoBean;
 
 public class SpringAnnotationApplication {
 
@@ -9,11 +10,13 @@ public class SpringAnnotationApplication {
 
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		// 注册的两种方式
-		context.registerBean("info2",Info.class,"spring 2",2);
+		context.registerBean("awareBean", AwareBean.class);
 		context.scan("spring.base.annotation.config");
 		context.refresh();
-		Info info1 = context.getBean("info1", Info.class);
-		Info info2 = context.getBean("info2", Info.class);
-		System.out.println(info1.toString()+info2.toString());
+		InfoBean infoBean = context.getBean("infoBean", InfoBean.class);
+		AwareBean awareBean = context.getBean(AwareBean.class);
+		context.close();
+		System.out.println(infoBean.toString());
+		System.out.println(awareBean.toString());
 	}
 }

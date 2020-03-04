@@ -49,7 +49,7 @@
 1.创建数据库表
 
 ```sql
-create table test.info(
+create table test.infoBean(
 id int auto_increment	
 primary key,
 name varchar(20) null, age int(3) null)
@@ -81,11 +81,11 @@ public class UserRowMapper implements RowMapper {
 
 	@Override
 	public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-		JdbcUser info = new JdbcUser();
-		info.setId(rs.getInt("id"));
-		info.setName(rs.getString("name"));
-		info.setAge(rs.getInt("age"));
-		return info;
+		JdbcUser infoBean = new JdbcUser();
+		infoBean.setId(rs.getInt("id"));
+		infoBean.setName(rs.getString("name"));
+		infoBean.setAge(rs.getInt("age"));
+		return infoBean;
 	}
 }
 ```
@@ -97,9 +97,9 @@ public interface UserDao {
 
 	/**
 	 * 插入
-	 * @param info	用户信息
+	 * @param infoBean	用户信息
 	 */
-	void insertUser(JdbcUser info);
+	void insertUser(JdbcUser infoBean);
 
 	/**
 	 * 根据 id 进行删除
@@ -129,16 +129,16 @@ public class UserJdbcTemplate implements UserDao {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void insertUser(JdbcUser info) {
-		String sql = "insert into info (id, name, age) values (?, ?, ?)";
-		jdbcTemplate.update(sql, info.getId(), info.getName(), info.getAge());
-		System.out.println("Create record : " + info.toString());
+	public void insertUser(JdbcUser infoBean) {
+		String sql = "insert into infoBean (id, name, age) values (?, ?, ?)";
+		jdbcTemplate.update(sql, infoBean.getId(), infoBean.getName(), infoBean.getAge());
+		System.out.println("Create record : " + infoBean.toString());
 	}
 
 	@Override
 	@Transactional
 	public void deleteById(Integer id) {
-		String sql = "delete from info where id = ?";
+		String sql = "delete from infoBean where id = ?";
 		jdbcTemplate.update(sql, id);
 		System.out.println("Delete record, id = " + id);
 		// 事务测试，抛出异常，让上面的插入操作回滚
@@ -148,7 +148,7 @@ public class UserJdbcTemplate implements UserDao {
 
 	@Override
 	public List<JdbcUser> selectAll() {
-		String sql = "select * from info";
+		String sql = "select * from infoBean";
 		List<JdbcUser> users = jdbcTemplate.query(sql, new UserRowMapper());
 		return users;
 	}
@@ -215,8 +215,8 @@ public class TransactionBootstrap {
 			ApplicationContext context = new ClassPathXmlApplicationContext("transaction/transaction.xml");
 			UserJdbcTemplate jdbcTemplate = (UserJdbcTemplate) context.getBean("userJdbcTemplate");
 			System.out.println("--- Records Creation start ----");
-			JdbcUser info = new JdbcUser(4, "test", 21);
-			jdbcTemplate.insertUser(info);
+			JdbcUser infoBean = new JdbcUser(4, "test", 21);
+			jdbcTemplate.insertUser(infoBean);
 	}
 }
 ```
