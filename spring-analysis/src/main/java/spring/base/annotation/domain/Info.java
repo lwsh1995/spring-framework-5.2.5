@@ -1,31 +1,27 @@
 package spring.base.annotation.domain;
 
-public class Info {
+import lombok.Data;
+import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.beans.factory.BeanNameAware;
+
+@Data
+public class Info implements BeanNameAware, BeanClassLoaderAware {
 	private String name;
 	private Integer version;
-
-	public Info() {
-		System.out.println("info parent");
-	}
+	private String beanName;
 
 	public Info(String name, Integer version) {
 		this.name = name;
 		this.version = version;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public Integer getVersion() {
-		return version;
+	@Override
+	public void setBeanName(String name) {
+		beanName=name;
 	}
 
 	@Override
-	public String toString() {
-		return "Info{" +
-				"name='" + name + '\'' +
-				", version=" + version +
-				'}';
+	public void setBeanClassLoader(ClassLoader classLoader) {
+		System.out.println("class loader: "+classLoader);
 	}
 }
