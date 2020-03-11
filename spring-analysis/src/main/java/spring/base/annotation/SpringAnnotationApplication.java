@@ -31,6 +31,9 @@ public class SpringAnnotationApplication {
 		StaticValue bean = context.getBean(StaticValue.class);
 		System.out.println("bean  "+bean.getValue());
 
+		EventBean eventBean = context.getBean(EventBean.class);
+		System.out.println(eventBean);
+
 		context.publishEvent(new EventBean("event ----"));
 
 	}

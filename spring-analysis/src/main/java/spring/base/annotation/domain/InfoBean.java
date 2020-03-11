@@ -94,8 +94,6 @@ public class InfoBean implements InitializingBean, DisposableBean,FactoryBean<Cu
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		InfoBean ben = beanFactory.getBean("&infoBean", InfoBean.class);
-		ben.setName("-----");
 	}
 
 	@Override

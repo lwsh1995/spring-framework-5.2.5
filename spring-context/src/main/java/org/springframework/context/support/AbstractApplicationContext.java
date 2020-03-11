@@ -712,7 +712,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * Instantiate and invoke all registered BeanFactoryPostProcessor beans,
 	 * respecting explicit order if given.
 	 * <p>Must be called before singleton instantiation.
-	 * 实例化并调用所有注册的	BeanFactoryPostProcessor，如果给定显式顺序，则遵循显式顺序。 必须在单例实例化之前调用
+	 * 实例化并调用所有注册的BeanFactoryPostProcessor。容器允许在实例化 `bean` 前，读取 `bean`
+	 * 信息和修改它的属性。相当于在实例化前，给用户最后一次机会去修改 `bean` 信息。
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
 		// 调用后置处理器

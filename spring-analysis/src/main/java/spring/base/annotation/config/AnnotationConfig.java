@@ -1,9 +1,11 @@
 package spring.base.annotation.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import spring.base.annotation.domain.AwareBean;
+import spring.base.annotation.domain.EventBean;
 import spring.base.annotation.domain.InfoBean;
 import spring.base.annotation.domain.StaticValue;
 
@@ -24,6 +26,11 @@ public class AnnotationConfig {
 	@Bean("staticValue")
 	StaticValue staticValue(){
 		return new StaticValue();
+	}
+
+	@Bean("eventBean")
+	EventBean eventBean(@Value("${event.name}") String name){
+		return new EventBean(name);
 	}
 
 }

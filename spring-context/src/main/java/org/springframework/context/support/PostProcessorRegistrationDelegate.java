@@ -83,12 +83,13 @@ final class PostProcessorRegistrationDelegate {
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
-			// AnnotationConfigApplicationContext会获取ConfigurationClassPostProcessor，用于加载配置类的Bean定义
-			// 处理BeanDefinitionRegistryPostProcessor接口的实现类
+			// 此时会获取AnnotationConfigApplicationContext注册的ConfigurationClassPostProcessor，用于加载配置类的Bean定义
+			// 处理BeanDefinitionRegistryPostProcessor接口的实现类，并在getBean获取该实例初始化该processor
 			String[] postProcessorNames =
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
 				if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+					// getBean时实例化BeanDefinitionRegistryPostProcessor接口的实现类
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
 					processedBeans.add(ppName);
 				}
@@ -132,7 +133,7 @@ final class PostProcessorRegistrationDelegate {
 
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
 			//在标准初始化之后修改应用程序上下文的内部bean工厂。所有bean定义都将被加载，但是还没有bean被实例化。
-			// 这允许重写或添加属性，甚至可以对bean进行初始化
+			// 这允许重写或添加属性，甚至可以对bean进行初始化，调用postProcessBeanFactory方法
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
 		}
@@ -144,7 +145,7 @@ final class PostProcessorRegistrationDelegate {
 
 		// Do not initialize FactoryBeans here: We need to leave all regular beans
 		// uninitialized to let the bean factory post-processors apply to them!
-		//不要在这里初始化factory beans：我们需要让所有常规bean都未初始化，以便让bean工厂后处理器应用于它们！
+		//不要在这里初始化FactoryBeans：需要让所有常规bean都未初始化，以便让bean工厂后处理器应用于它们！
 		String[] postProcessorNames =
 				beanFactory.getBeanNamesForType(BeanFactoryPostProcessor.class, true, false);
 
@@ -158,6 +159,7 @@ final class PostProcessorRegistrationDelegate {
 				// skip - already processed in first phase above
 			}
 			else if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+				//getBean时实力化BeanFactoryPostProcessor接口的实现类
 				priorityOrderedPostProcessors.add(beanFactory.getBean(ppName, BeanFactoryPostProcessor.class));
 			}
 			else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
