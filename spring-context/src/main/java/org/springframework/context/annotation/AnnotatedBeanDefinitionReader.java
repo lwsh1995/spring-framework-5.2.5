@@ -66,6 +66,7 @@ public class AnnotatedBeanDefinitionReader {
 	 * in the form of a {@code BeanDefinitionRegistry}
 	 * @see #AnnotatedBeanDefinitionReader(BeanDefinitionRegistry, Environment)
 	 * @see #setEnvironment(Environment)
+	 *
 	 */
 	public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry) {
 		this(registry, getOrCreateEnvironment(registry));
@@ -79,6 +80,7 @@ public class AnnotatedBeanDefinitionReader {
 	 * @param environment the {@code Environment} to use when evaluating bean definition
 	 * profiles.
 	 * @since 3.1
+	 *
 	 */
 	public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry, Environment environment) {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
@@ -86,7 +88,7 @@ public class AnnotatedBeanDefinitionReader {
 		this.registry = registry;
 		// 用于评估Conditional注解的类
 		this.conditionEvaluator = new ConditionEvaluator(registry, environment, null);
-		// 注册bean对象的后置处理
+		// 注册所有与注解相关的后置处理器
 		AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
 	}
 
@@ -133,6 +135,7 @@ public class AnnotatedBeanDefinitionReader {
 	 * component class more than once has no additional effect.
 	 * @param componentClasses one or more component classes,
 	 * e.g. {@link Configuration @Configuration} classes
+	 * 注册多个组件类
 	 */
 	public void register(Class<?>... componentClasses) {
 		for (Class<?> componentClass : componentClasses) {
@@ -144,6 +147,7 @@ public class AnnotatedBeanDefinitionReader {
 	 * Register a bean from the given bean class, deriving its metadata from
 	 * class-declared annotations.
 	 * @param beanClass the class of the bean
+	 *  从给定的bean类中注册一个bean，从类声明的注释中派生其元数据。
 	 */
 	public void registerBean(Class<?> beanClass) {
 		doRegisterBean(beanClass, null, null, null, null);

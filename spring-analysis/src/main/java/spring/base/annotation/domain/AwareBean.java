@@ -7,14 +7,17 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.context.EmbeddedValueResolverAware;
-import org.springframework.context.EnvironmentAware;
+import org.springframework.context.*;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StringValueResolver;
+import org.springframework.web.context.ServletContextAware;
 
+import javax.servlet.ServletContext;
 import java.util.Iterator;
 
-public class AwareBean implements BeanNameAware, BeanClassLoaderAware, BeanFactoryAware, EnvironmentAware , EmbeddedValueResolverAware {
+public class AwareBean implements BeanNameAware, BeanClassLoaderAware, BeanFactoryAware, EnvironmentAware , EmbeddedValueResolverAware ,
+		ResourceLoaderAware , ApplicationEventPublisherAware ,MessageSourceAware,ApplicationContextAware, ServletContextAware {
 
 
 	private String beanName;
@@ -48,6 +51,7 @@ public class AwareBean implements BeanNameAware, BeanClassLoaderAware, BeanFacto
 		while (beanNamesIterator.hasNext()){
 			System.out.print(beanNamesIterator.next()+"\t");
 		}
+		System.out.println();
 	}
 
 	@Override
@@ -61,6 +65,31 @@ public class AwareBean implements BeanNameAware, BeanClassLoaderAware, BeanFacto
 	}
 
 	@Override
+	public void setResourceLoader(ResourceLoader resourceLoader) {
+		System.out.println("resource loader "+resourceLoader.getClass());
+	}
+
+	@Override
+	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+		applicationEventPublisher.publishEvent(new EventBean("aware event bean "));
+	}
+
+	@Override
+	public void setMessageSource(MessageSource messageSource) {
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		System.out.println(applicationContext.getApplicationName()+applicationContext.getId());
+	}
+
+	@Override
+	public void setServletContext(ServletContext servletContext) {
+		System.out.println(servletContext.getContextPath());
+
+	}
+
+	@Override
 	public String toString() {
 		return "AwareBean{" +
 				"beanName='" + beanName + '\'' +
@@ -71,4 +100,5 @@ public class AwareBean implements BeanNameAware, BeanClassLoaderAware, BeanFacto
 				", stringValueResolver=" + stringValueResolver +
 				'}';
 	}
+
 }

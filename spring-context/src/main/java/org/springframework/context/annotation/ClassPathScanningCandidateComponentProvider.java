@@ -200,6 +200,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * {@link Controller @Controller} stereotype annotations.
 	 * <p>Also supports Java EE 6's {@link javax.annotation.ManagedBean} and
 	 * JSR-330's {@link javax.inject.Named} annotations, if available.
+	 * 隐式注册所有具有@Component元注释的注释，包括@Repository、@Service和@Controller原型注释。
 	 *
 	 */
 	@SuppressWarnings("unchecked")
@@ -263,7 +264,9 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	@Override
 	public void setResourceLoader(@Nullable ResourceLoader resourceLoader) {
 		this.resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
+		// 共享本地资源缓存
 		this.metadataReaderFactory = new CachingMetadataReaderFactory(resourceLoader);
+		// 加载META-INF/spring.components资源
 		this.componentsIndex = CandidateComponentsIndexLoader.loadIndex(this.resourcePatternResolver.getClassLoader());
 	}
 
