@@ -432,6 +432,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 					try {
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
 						if (isCandidateComponent(metadataReader)) {
+							// 解析classpath下的class资源，spring使用asm加载class对象
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setResource(resource);
 							sbd.setSource(resource);

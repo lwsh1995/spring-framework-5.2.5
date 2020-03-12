@@ -74,6 +74,7 @@ class ComponentScanAnnotationParser {
 
 
 	public Set<BeanDefinitionHolder> parse(AnnotationAttributes componentScan, final String declaringClass) {
+		// 创建扫描器
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(this.registry,
 				componentScan.getBoolean("useDefaultFilters"), this.environment, this.resourceLoader);
 
@@ -82,6 +83,7 @@ class ComponentScanAnnotationParser {
 		scanner.setBeanNameGenerator(useInheritedGenerator ? this.beanNameGenerator :
 				BeanUtils.instantiateClass(generatorClass));
 
+		// 设置扫描器的代理模式
 		ScopedProxyMode scopedProxyMode = componentScan.getEnum("scopedProxy");
 		if (scopedProxyMode != ScopedProxyMode.DEFAULT) {
 			scanner.setScopedProxyMode(scopedProxyMode);
@@ -109,6 +111,7 @@ class ComponentScanAnnotationParser {
 			scanner.getBeanDefinitionDefaults().setLazyInit(true);
 		}
 
+		//处理basePackages
 		Set<String> basePackages = new LinkedHashSet<>();
 		String[] basePackagesArray = componentScan.getStringArray("basePackages");
 		for (String pkg : basePackagesArray) {
@@ -129,6 +132,7 @@ class ComponentScanAnnotationParser {
 				return declaringClass.equals(className);
 			}
 		});
+		// 解析package路径
 		return scanner.doScan(StringUtils.toStringArray(basePackages));
 	}
 

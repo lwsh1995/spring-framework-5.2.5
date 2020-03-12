@@ -549,6 +549,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			throws BeanCreationException {
 
 		// Instantiate the bean.
+		// 调用构造器实例化bean
 		BeanWrapper instanceWrapper = null;
 		if (mbd.isSingleton()) {
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
@@ -589,9 +590,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// Initialize the bean instance.
+		// 初始化Bean的实例
 		Object exposedObject = bean;
 		try {
+			// 填充Bean的属性，如@Autowired注入对象
 			populateBean(beanName, mbd, instanceWrapper);
+			// 初始化对象，一般用于工厂回调、initMethod、post processor后置处理器
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {
@@ -1173,6 +1177,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			return obtainFromSupplier(instanceSupplier, beanName);
 		}
 
+		// FactoryBean实例化
 		if (mbd.getFactoryMethodName() != null) {
 			return instantiateUsingFactoryMethod(beanName, mbd, args);
 		}

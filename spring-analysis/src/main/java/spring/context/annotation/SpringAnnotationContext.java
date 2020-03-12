@@ -2,8 +2,10 @@ package spring.context.annotation;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring.context.annotation.config.BeanConfig;
+import spring.context.annotation.config.ImportConfig;
 import spring.context.annotation.config.PropertiesConfig;
 import spring.context.annotation.config.ScanConfig;
+import spring.context.annotation.domain.EventBean;
 import spring.context.annotation.domain.NormalBean;
 
 public class SpringAnnotationContext {
@@ -17,10 +19,11 @@ public class SpringAnnotationContext {
 		context.refresh();*/
 		//		第二种方式
 		AnnotationConfigApplicationContext context
-				= new AnnotationConfigApplicationContext(BeanConfig.class, PropertiesConfig.class, ScanConfig.class);
+				= new AnnotationConfigApplicationContext(BeanConfig.class, PropertiesConfig.class, ScanConfig.class, ImportConfig.class);
 		NormalBean normalBean = context.getBean("normalBean",NormalBean.class);
-		NormalBean normal2 = context.getBean("normal",NormalBean.class);
-		System.out.println(normalBean+"\n"+normal2);
-
+		NormalBean normal = context.getBean("normal",NormalBean.class);
+		NormalBean inner = context.getBean("inner", NormalBean.class);
+		System.out.println(normalBean+"\n"+normal+"\n"+inner);
+		context.publishEvent(new EventBean(context,"event"));
 	}
 }

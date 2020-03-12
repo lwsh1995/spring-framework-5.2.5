@@ -274,6 +274,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 		for (String basePackage : basePackages) {
+			// 加载classpath下的资源
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
 			for (BeanDefinition candidate : candidates) {
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
@@ -290,6 +291,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 					definitionHolder =
 							AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 					beanDefinitions.add(definitionHolder);
+					// 注册bean到容器中
 					registerBeanDefinition(definitionHolder, this.registry);
 				}
 			}
@@ -304,7 +306,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * @param beanName the generated bean name for the given bean
 	 */
 	protected void postProcessBeanDefinition(AbstractBeanDefinition beanDefinition, String beanName) {
+		// 扫描器中的Defaults应用到beanDefinition中
 		beanDefinition.applyDefaults(this.beanDefinitionDefaults);
+		// 该bean是否有@Autowired候选者
 		if (this.autowireCandidatePatterns != null) {
 			beanDefinition.setAutowireCandidate(PatternMatchUtils.simpleMatch(this.autowireCandidatePatterns, beanName));
 		}

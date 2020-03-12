@@ -133,7 +133,7 @@ final class PostProcessorRegistrationDelegate {
 
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
 			//在标准初始化之后修改应用程序上下文的内部bean工厂。所有bean定义都将被加载，但是还没有bean被实例化。
-			// 这允许重写或添加属性，甚至可以对bean进行初始化，调用postProcessBeanFactory方法
+			// 这允许重写或添加属性，甚至可以对bean进行初始化，调用BeanDefinitionRegistryPostProcessor#postProcessBeanFactory方法
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
 		}
@@ -187,6 +187,7 @@ final class PostProcessorRegistrationDelegate {
 		for (String postProcessorName : nonOrderedPostProcessorNames) {
 			nonOrderedPostProcessors.add(beanFactory.getBean(postProcessorName, BeanFactoryPostProcessor.class));
 		}
+		// 这允许重写或添加属性，甚至可以对bean进行初始化，BeanFactoryPostProcessor#postProcessBeanFactory方法
 		invokeBeanFactoryPostProcessors(nonOrderedPostProcessors, beanFactory);
 
 		// Clear cached merged bean definitions since the post-processors might have
@@ -281,7 +282,7 @@ final class PostProcessorRegistrationDelegate {
 			Collection<? extends BeanDefinitionRegistryPostProcessor> postProcessors, BeanDefinitionRegistry registry) {
 
 		for (BeanDefinitionRegistryPostProcessor postProcessor : postProcessors) {
-			// 如果上下文为AnnotationConfigApplicationContext则执行ConfigurationClassPostProcessor的方法，用于获取注解配置的bean
+			// AnnotationConfigApplicationContext则执行ConfigurationClassPostProcessor的方法，执行@Configuration中的定义
 			postProcessor.postProcessBeanDefinitionRegistry(registry);
 		}
 	}

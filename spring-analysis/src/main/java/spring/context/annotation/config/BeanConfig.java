@@ -8,8 +8,16 @@ import spring.context.annotation.domain.NormalBean;
 @Configuration
 public class BeanConfig {
 
+	class InnerConfig{
+		@Bean("inner")
+		NormalBean normalBean(){
+			return new NormalBean("inner bean");
+		}
+	}
+
 	@Bean
 	NormalBean normalBean(@Value("${normal.name}")String name){
 		return new NormalBean(name);
 	}
+
 }
