@@ -1,6 +1,7 @@
 package spring.context.annotation;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import spring.context.annotation.component.AopComponent;
 import spring.context.annotation.config.BeanConfig;
 import spring.context.annotation.config.ImportConfig;
 import spring.context.annotation.config.PropertiesConfig;
@@ -25,5 +26,10 @@ public class SpringAnnotationContext {
 		NormalBean inner = context.getBean("inner", NormalBean.class);
 		System.out.println(normalBean+"\n"+normal+"\n"+inner);
 		context.publishEvent(new EventBean(context,"event"));
+
+		AopComponent aopComponent = context.getBean(AopComponent.class);
+
+		aopComponent.aopMethod();
+
 	}
 }
