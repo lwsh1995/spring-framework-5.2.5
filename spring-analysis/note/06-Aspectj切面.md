@@ -296,7 +296,7 @@ protected Object wrapIfNecessary(Object bean, String beanName, Object cacheKey) 
 ---
 ## 获取增强方法或者增强器
 
-入口方法在这里：
+入口方法：
 
 ```
 protected Object[] getAdvicesAndAdvisorsForBean(
@@ -323,112 +323,24 @@ protected List<Advisor> findEligibleAdvisors(Class<?> beanClass, String beanName
 }
 ```
 
-对于指定 `bean` 的增强方法的获取包含这两个步骤，获取所有的增强以及寻找所有增强中适用于 `bean` 的增强并应用。对应于 `findCandidateAdvisors` 和 `findAdvisorsThatCanApply` 这两个方法。如果没找到对应的增强器，那就返回 `DO_NOT_PROXY` ，表示不需要进行增强。
-
-由于逻辑太多，所以接下来贴的代码不会太多，主要来了解它的大致流程，有需要的可以跟着源码工程的注释跟踪完整的流程~：
+对于指定 `bean` 的增强方法的获取包含这两个步骤，获取所有的增强以及寻找所有增强中适用于 `bean` 的增强并应用。
+对应于 `findCandidateAdvisors` 和 `findAdvisorsThatCanApply` 这两个方法。如果没找到对应的增强器，那就返回 `DO_NOT_PROXY` ，表示不需要进行增强。
 
 ---
 ### 寻找对应的增强器 findCandidateAdvisors
 
-```java
-protected List<Advisor> findCandidateAdvisors() {
-	List<Advisor> advisors = super.findCandidateAdvisors();
-	if (this.aspectJAdvisorsBuilder != null) {
-		// 注释 8.3 实际调用的是 org.springframework.aop.aspectj.annotation.BeanFactoryAspectJAdvisorsBuilder.buildAspectJAdvisors
-		advisors.addAll(this.aspectJAdvisorsBuilder.buildAspectJAdvisors());
-	}
-	return advisors;
-}
-```
 
-实际来看，关键是这个方法 `this.aspectJAdvisorsBuilder.buildAspectJAdvisors()` 这个方法看起来简单，但是实际处理的逻辑很多，代码深度也很多，所以为了避免太多代码，我**罗列了主要流程，和关键的处理方法做了什么**
 
-主要流程如下：
 
-1. **获取所有 beanName，会将之前在 beanFactory 中注册的 bean 都提取出来。**
-2. **遍历前一步骤提取出来的 bean 列表，找出打上 @AspectJ 注解的类，进行进一步处理**
-3. **继续对前一步提取的 @AspectJ 注解的类进行增强器的提取**
-4. **将提取结果加入缓存中**
 
-可以查询代码中的注释，**从 [注释 8.3] 到 [注释 8.8 根据切点信息生成增强器] 都是这个方法的处理逻辑**
-
-※※**在这个流程的最后一步中，会将识别到的切点信息（PointCut）和增强方法(Advice)进行封装，具体是由 `Advisor` 的实现类 `InstantiationModelAwarePointcutAdvisorImpl` 进行统一封装。**
-
-```java
-public InstantiationModelAwarePointcutAdvisorImpl(AspectJExpressionPointcut declaredPointcut, Method aspectJAdviceMethod, AspectJAdvisorFactory aspectJAdvisorFactory, MetadataAwareAspectInstanceFactory aspectInstanceFactory, int declarationOrder, String aspectName) {
-	// 简单赋值
-	this.declaredPointcut = declaredPointcut;
-    ...
-
-	if (aspectInstanceFactory.getAspectMetadata().isLazilyInstantiated()) {
-		Pointcut preInstantiationPointcut = Pointcuts.union(aspectInstanceFactory.getAspectMetadata().getPerClausePointcut(), this.declaredPointcut);
-		this.pointcut = new PerTargetInstantiationModelPointcut(
-		this.declaredPointcut, preInstantiationPointcut, aspectInstanceFactory);
-		this.lazy = true;
-	}
-	else {
-		// A singleton aspect.
-		this.pointcut = this.declaredPointcut;
-		this.lazy = false;
-		// 初始化增强器
-		this.instantiatedAdvice = instantiateAdvice(this.declaredPointcut);
-	}
-}
-```
-
-封装体前半部分逻辑只是简单赋值。关键是这个方法 `instantiateAdvice(this.declaredPointcut)`，在这一步中，对不同的增强（Before/After/Around）实现的逻辑是不一样的。在 `ReflectiveAspectJAdvisorFactory#getAdvice` 方法中区别实现了根据不同的注解类型封装不同的增强器。
-
-```java
-public Advice getAdvice(Method candidateAdviceMethod, AspectJExpressionPointcut expressionPointcut,
-			MetadataAwareAspectInstanceFactory aspectInstanceFactory, int declarationOrder, String aspectName) {
-		...
-    // 注释 8.7 根据不同的注解类型封装不同的增强器
-	switch (aspectJAnnotation.getAnnotationType()) {
-		case AtPointcut:
-			
-		}
-		return null;
-	case AtAround:
-		springAdvice = new AspectJAroundAdvice(
-				candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);
-		break;
-	case AtBefore:
-		springAdvice = new AspectJMethodBeforeAdvice(
-				candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);
-		break;
-	case AtAfter:
-		springAdvice = new AspectJAfterAdvice(
-				candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);
-		break;
-	case AtAfterReturning:
-		springAdvice = new AspectJAfterReturningAdvice(
-		    candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);
-		AfterReturning afterReturningAnnotation = (AfterReturning) aspectJAnnotation.getAnnotation();
-		if (StringUtils.hasText(afterReturningAnnotation.returning())) {
-			springAdvice.setReturningName(afterReturningAnnotation.returning());
-		}
-		break;
-	case AtAfterThrowing:
-		springAdvice = new AspectJAfterThrowingAdvice(
-		    candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);
-		AfterThrowing afterThrowingAnnotation = (AfterThrowing) aspectJAnnotation.getAnnotation();
-	    if (StringUtils.hasText(afterThrowingAnnotation.throwing())) {
-		    springAdvice.setThrowingName(afterThrowingAnnotation.throwing());
-		}
-		break;
-	default:
-	}		
-}
-```
-
-最后切点方法通过解析和封装成 `Advisor`，提取到的结果加入到缓存中。细心的你可能会发现**除了普通的增强器外，还有另外两种增强器：同步实例化增强器和引介增强器。**由于用的比较少，所以我看到源码中这两个分支处理没有深入去学习，感兴趣的同学请继续深入学习这两种增强器~
+最后切点方法通过解析和封装成 `Advisor`，提取到的结果加入到缓存中。**除了普通的增强器外，还有另外两种增强器：同步实例化增强器和引介增强器。**
 
 ---
 ### 获取匹配的增强器 findAdvisorsThatCanApply
 
 在前面流程中，已经完成了所有增强器的解析，但是对于前面解析到的增强器，并不一定都适用于当前处理的 `bean`，所以还需要通过一个方法来挑选出合适的增强器。
 
-```java
+```
 protected List<Advisor> findAdvisorsThatCanApply(List<Advisor> candidateAdvisors, Class<?> beanClass, String beanName) {
 	ProxyCreationContext.setCurrentProxiedBeanName(beanName);
 	try {
@@ -443,7 +355,7 @@ protected List<Advisor> findAdvisorsThatCanApply(List<Advisor> candidateAdvisors
 
 可以看到，具体实现过滤操作的是工具类方法 `AopUtils.findAdvisorsThatCanApply`:
 
-```java
+``` 
 public static List<Advisor> findAdvisorsThatCanApply(List<Advisor> candidateAdvisors, Class<?> clazz) {
 	if (candidateAdvisors.isEmpty()) {
 		return candidateAdvisors;
@@ -480,7 +392,7 @@ public static List<Advisor> findAdvisorsThatCanApply(List<Advisor> candidateAdvi
 
 通过前面的流程，获取到了所有对应 `bean` 的增强器后，可以开始代理的创建。
 
-```java
+```
 protected Object createProxy(Class<?> beanClass, @Nullable String beanName,
 			@Nullable Object[] specificInterceptors, TargetSource targetSource) {
 	ProxyFactory proxyFactory = new ProxyFactory();
@@ -527,7 +439,7 @@ protected Object createProxy(Class<?> beanClass, @Nullable String beanName,
 
 接着，完成了所有增强器的封装过程，到了解析的最后一步，**进行代理的创建和获取**。
 
-```java
+``` 
 public Object getProxy(@Nullable ClassLoader classLoader) {
 	return createAopProxy().getProxy(classLoader);
 }
@@ -535,28 +447,7 @@ public Object getProxy(@Nullable ClassLoader classLoader) {
 
 
 ---
-### 创建代理 createAopProxy()
 
-定位到创建代理的代码：
-
-```java
-public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
-	if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
-		Class<?> targetClass = config.getTargetClass();
-		if (targetClass == null) {
-			throw new AopConfigException("TargetSource cannot determine target class: " +
-					"Either an interface or a target is required for proxy creation.");
-		}
-		if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {
-			return new JdkDynamicAopProxy(config);
-		}
-		return new ObjenesisCglibAopProxy(config);
-	}
-	else {
-		return new JdkDynamicAopProxy(config);
-	}
-}
-```
 
 从上面代码中能看出，根据了**几个关键属性，判断创建的是哪种类型的 `AopProxy`，一种是 JDK 动态代理，另一种是 CGLIB 动态代理。**
 
@@ -565,11 +456,9 @@ public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException 
 ---
 ### 获取代理 getProxy()
 
-![](./pics/spring8/proxy_factory_create_aop_proxy.png)
+有两种代理方式：**[JDK 动态代理] 和 [CGLIB 动态代理]**
 
-观察图片以及前面分析，可以知道有两种代理方式：**[JDK 动态代理] 和 [CGLIB 动态代理]**
-
-同时先说下**动态代理的含义：抽象类在编译期间是未确定具体实现子类，在运行时才生成最终对象。**
+**动态代理的含义：抽象类在编译期间是未确定具体实现子类，在运行时才生成最终对象。**
 
 ---
 
@@ -581,9 +470,8 @@ public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException 
 
 > JdkDynamicAopProxy.java
 
-```java
+``` 
 public Object getProxy(@Nullable ClassLoader classLoader) {
-	// 注释 8.11 JDK 动态代理
 	if (logger.isTraceEnabled()) {
 		logger.trace("Creating JDK dynamic proxy: " + this.advised.getTargetSource());
 	}
@@ -597,15 +485,15 @@ public Object getProxy(@Nullable ClassLoader classLoader) {
 
 > org.springframework.aop.framework.JdkDynamicAopProxy#invoke
 
-```java
+``` 
 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-	// 注释 8.12 jdk 动态代理重载的 invoke 方法
-	MethodInvocation invocation;
+	// jdk 动态代理重载的 invoke 方法
 	Object oldProxy = null;
 	boolean setProxyContext = false;
 	TargetSource targetSource = this.advised.targetSource;
 	Object target = null;
 	try {
+        ......
 		Object retVal;
 		if (this.advised.exposeProxy) {
 			// Make invocation available if necessary.
@@ -644,11 +532,12 @@ public Object invoke(Object proxy, Method method, Object[] args) throws Throwabl
 }
 ```
 
-**创建 `JDK` 代理过程中，主要的工作时创建了一个拦截器链，并使用 `ReflectiveMethodInvocation` 类进行封装，封装之后，逐一调用它的 `proceed` 方法， 用来实现在目标方法的前置增强和后置增强。**
+**创建 `JDK` 代理过程中，主要的工作时创建了一个拦截器链，并使用 `ReflectiveMethodInvocation` 类进行封装，封装之后，逐一调用它的 `proceed` 方法，
+ 用来实现在目标方法的前置增强和后置增强。**
 
 > org.springframework.aop.framework.ReflectiveMethodInvocation#proceed
 
-```java
+``` 
 public Object proceed() throws Throwable {
 	// 执行完所有增强器后执行切点方法
 	if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
@@ -676,28 +565,9 @@ public Object proceed() throws Throwable {
 }
 ```
 
-具体代码和注释请定位到该方法查看。关于 `JDK` 动态代理，深入学习的话也可以单独拎出来，所以推荐看这篇资料 [小豹子带你看源码：JDK 动态代理](https://juejin.im/post/5a546ad051882573443c8eec)，进行了和学习
-
 ---
 
 #### CGLIB 动态代理
-
-`CGLIB[Code Generation LIB]` 是一个强大的高性能的代码生成包。它广泛应用于许多 `AOP` 框架。
-
-**再次推荐参考资料一，这位老哥将 `CGLIB` 代理， 详细介绍了 `CGLIB` 在什么场景使用，以及被它增强后代码处理顺序，[Cglib及其基本使用](https://www.cnblogs.com/xrq730/p/6661692.html)。**
-
-希望看完这篇文章，能过了解到 `CGLIB` 代码生成包具体是如何对类进行增强。
-
----
-### 代理增强结果
-
-通过前面一系列步骤，解析标签、属性、增强方法，到最后获取 `CGLIB` 代理，通过代理创建 `bean`
-
-来看下最后被代理的 `bean` 内部：
-
-![after_post_bean_processor](./pics/spring8/after_post_bean_processor.png)
-
-**从图中可以看到，最终创建的是被修饰后的 `bean`，内部很明显是 `CGGLIB` 代理生成的代码，我们在不修改业务代码的情况下，实现了方法增强。**
 
 ---
 # 静态 AOP 
@@ -706,51 +576,6 @@ public Object proceed() throws Throwable {
 
 使用静态 `AOP` 的时候，需要用到 `LTW` （Load-Time Weaving 加载时织入），指的是在虚拟机载入字节码文件时动态织入 `AspectJ` 切面。
 
-**`AOP` 的静态代理主要是在虚拟机启动时通过改变目标对象字节码的方式来完成对目标对象的增强，它与动态代理相比具有更高的效率，因为在动态代理调用的过程中，还需要一个动态创建代理类并代理目标对象的步骤，而静态代理则是在启动时便完成了字节码增减，当系统再次调用目标类时，与调动正常的类并无区别，所以在效率上会相对高些。**
-
-关于静态 `AOP` 的使用和学习，可以参考这篇文章：[从代理机制到Spring AOP](https://juejin.im/post/5b90e648f265da0aea695672)
-
----
-# 总结
-
-动态 `AOP` 使用起来很简单，对于如何实现，总结起来就两点：
-
-1. **动态解析 `AOP` 标签**
-2. **创建 `AOP` 代理**
-
-**但在 `Spring` 底层实现逻辑却是复杂到不行，从 `Spring` 框架中可以看到这是良好的代码设计思路，顶层入口尽量简单，使用者很容易就能掌握该功能，复杂实现逻辑都被隐藏了。**
-
-写这一篇 `AOP` 学习总结，花了将近一周，先看了一遍书籍， 下班后花了一晚，将大致流程理了一遍，第二天晚上走读代码，发现有些地方还存在疑惑，例如 `JDK` 和 `cglib` 动态代理是怎么回事，翻阅查询资料，弄懂后又过了一天。
-
-将代码注释加上，分析**动态代理**每一个步骤做的事情，结合之前学的后处理器 `BeanPostProcessor` 知识和自定义标签解析知识一起又梳理一遍。零零散散，终于整理完成。
-
-**在静态 `AOP` 知识点，按照我的理解，越往系统底层深入，它的执行效率越高，所以减少了动态创建代理类和代理目标对象的步骤，静态代理的速度会得到提升。同时由于接近底层后，代码编写的复杂度同样会增加，所以我在权衡高频率使用场景（动态代理），本次学习没有详细去了解，留下这个坑，以后有机会再填吧~**
-
----
-
-**由于个人技术有限，如果有理解不到位或者错误的地方，请留下评论，我会根据朋友们的建议进行修正**
-
-[Gitee 地址 https://gitee.com/vip-augus/spring-analysis-note.git](https://gitee.com/vip-augus/spring-analysis-note.git)
-
-[Github 地址 https://github.com/Vip-Augus/spring-analysis-note](https://github.com/Vip-Augus/spring-analysis-note)
-
----
-# 参考资料
-
-1. [Cglib及其基本使用](https://www.cnblogs.com/xrq730/p/6661692.html)
-
-2. [说说 cglib 动态代理](http://blog.jobbole.com/105423/)
-
-3. [Spring-AOP 自动创建代理](https://blog.csdn.net/yangshangwei/article/details/77448420)
-
-4. [小豹子带你看源码：JDK 动态代理](https://juejin.im/post/5a546ad051882573443c8eec)
-
-5. [从代理机制到Spring AOP](https://juejin.im/post/5b90e648f265da0aea695672)
-
-6. Spring 源码深度解析 / 郝佳编著. -- 北京 : 人民邮电出版社
-
-
-
-
-
-
+**`AOP` 的静态代理主要是在虚拟机启动时通过改变目标对象字节码的方式来完成对目标对象的增强，它与动态代理相比具有更高的效率，因为
+在动态代理调用的过程中，还需要一个动态创建代理类并代理目标对象的步骤，而静态代理则是在启动时便完成了字节码增减，当系统再次调用
+目标类时，与调动正常的类并无区别，所以在效率上会相对高些。**
