@@ -1,4 +1,4 @@
-package spring.design.singleton;
+package spring.context.design.singleton;
 
 public class LazySingleton {
 	private static LazySingleton lazySingleton;
