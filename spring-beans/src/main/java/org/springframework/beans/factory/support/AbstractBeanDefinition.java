@@ -141,32 +141,51 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private volatile Object beanClass;
 
+	//bean作用范围，bean的属性scope
 	@Nullable
 	private String scope = SCOPE_DEFAULT;
 
+	//是否是抽象，bean的属性
 	private boolean abstractFlag = false;
 
+	//是否延迟加载
 	@Nullable
 	private Boolean lazyInit;
 
+	//自动注入模式
 	private int autowireMode = AUTOWIRE_NO;
 
 	private int dependencyCheck = DEPENDENCY_CHECK_NONE;
 
+	//表示一个bean的实例化依靠另一个bean先实例化
 	@Nullable
 	private String[] dependsOn;
 
+	//false，容器在查找自动装配对象时，将不考虑该bean，即不会作为其他bean自动装配的候选者
+	//但该bean本身可以使用自动装配注入其他bean
 	private boolean autowireCandidate = true;
 
+	//自动装配出现多个bean候选者时，将作为首选者
 	private boolean primary = false;
 
+	//记录Qualifier，对应子元素qualifier
 	private final Map<String, AutowireCandidateQualifier> qualifiers = new LinkedHashMap<>();
 
 	@Nullable
 	private Supplier<?> instanceSupplier;
 
+	//允许访问非公开的构造器和方法
 	private boolean nonPublicAccessAllowed = true;
 
+	//是否以宽松的模式解析构造函数，默认true
+	//如果false，存在一下情况
+	//	interface ITest{}
+	//	class ITestImpl extend ITest{}
+	//	Class Test{
+	//	 main(ITest i){}
+	//	 main(ITestImpl i){}
+	//	}
+	//抛出异常，spring无法准确定位构造函数
 	private boolean lenientConstructorResolution = true;
 
 	@Nullable
@@ -175,12 +194,15 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private String factoryMethodName;
 
+	//记录构造函数注入属性，对应bean属性的constructor-arg
 	@Nullable
 	private ConstructorArgumentValues constructorArgumentValues;
 
+	//普通属性集合
 	@Nullable
 	private MutablePropertyValues propertyValues;
 
+	//方法重写持有者，记录look-method、replace-method
 	private MethodOverrides methodOverrides = new MethodOverrides();
 
 	@Nullable
@@ -193,13 +215,16 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	private boolean enforceDestroyMethod = true;
 
+	//是否是用户定义的而不是应用程序本身定义的，创建aop时为true，程序设置
 	private boolean synthetic = false;
 
+	//APPLICATION 用户，INFRASTRUCTURE 内部使用，与用户无关，SUPPORT 某些复杂配置的一部分
 	private int role = BeanDefinition.ROLE_APPLICATION;
 
 	@Nullable
 	private String description;
 
+	//bean定义的资源
 	@Nullable
 	private Resource resource;
 

@@ -263,21 +263,6 @@ create table account(
     amount int
 )
 ```
-默认数据：a 用户 100，b 用户 100
-
-- **READ_UNCOMMITTED**
-
-最低级别，只能保证不读取物理上损害的数据，允许脏读
-
-- **READ_COMMITTED**
-
-只能读到已经提交的数据
-
-- **REPEATABLE_READ**
-
-确保同一事务的多个实例在并发读取数据时，会看到同样的数据行。理论上这会导致另一个问题：幻读 （Phantom Read）。
-幻读指当用户读取某一范围的数据行时，另一个事务又在该范围内插入了新行，当用户再读取该范围的数据行时，会发现有新的“幻影” 行。
-InnoDB和Falcon存储引擎通过多版本并发控制（MVCC，Multiversion Concurrency Control）机制解决了该问题。
 
 实例
 ```sql
@@ -292,6 +277,41 @@ InnoDB和Falcon存储引擎通过多版本并发控制（MVCC，Multiversion Con
 6、update account set amount =amount-100 where user='b';
 7、commit;
 ```
+
+默认数据：a 用户 100，b 用户 100
+
+- **READ_UNCOMMITTED**
+
+最低级别，一个事务能读取到另一个事务还未提交的数据，也就是脏数据。
+
+设置会话 1 和会话 2 隔离级别为读未提交
+set session transaction isolation level read uncommitted;
+
+执行步骤1、2，此时a的金额为100
+执行步骤4、5，此时a的金额为200
+执行步骤2，能读到会话1中未提交的事务中的数据，即会话2中a的金额为200
+执行步骤6、7、3，此时a金额200，b金额0
+
+- **READ_COMMITTED**
+
+只能读到已经提交的数据
+
+设置会话 1 和会话 2 隔离级别为读
+提交
+set session transaction isolation level read committed ;
+
+执行步骤1、2，此时a的金额为100
+执行步骤4、5，此时a的金额为200
+执行步骤2，会话1a的金额为100
+执行步骤6、7，此时a金额200，b金额0
+执行步骤2，此时a金额200
+
+- **REPEATABLE_READ**
+
+确保同一事务的多个实例在并发读取数据时，会看到同样的数据行。理论上这会导致另一个问题：幻读 （Phantom Read）。
+幻读指当用户读取某一范围的数据行时，另一个事务又在该范围内插入了新行，当用户再读取该范围的数据行时，会发现有新的“幻影” 行。
+InnoDB和Falcon存储引擎通过多版本并发控制（MVCC，Multiversion Concurrency Control）机制解决了该问题。
+
 创建两个session会话，会话1可能处理教长，执行步骤1、2，a用户的金额为100。之后会话2的执行完整的事务，包括步骤4、5、6、7，数据已经更改为
 a 200 ，b 100。此时在执行会话1中的步骤2 a依然为100，即可重复读的同一事务的多个实例在并发读取数据时，会看到同样的数据行。只有当执行
 会话1的步骤3时，再单独执行步骤2才为正确的结果。
@@ -323,7 +343,7 @@ public void init() {
 
 根据上面的方法，`Spring` 在初始化时候，如果遇到诸如 `<tx:annotation-driven>` 开头的配置后，将会使用 `AnnotationDrivenBeanDefinitionParser` 解析器的 `parse` 方法进行解析。
 
-```java
+``` 
 public BeanDefinition parse(Element element, ParserContext parserContext) {
 	registerTransactionalEventListenerFactory(parserContext);
 	String mode = element.getAttribute("mode");
@@ -410,8 +430,6 @@ private static class AopAutoProxyConfigurer {
 3. **Advisor**
 用来封装切面的所有信息，主要是上面两个，它用来充当 `Advice` 和 `Pointcut` 的适配器。
 
-![advisor_consist](./pics/spring9/advisor_consist.png)
-
 回顾完 `AOP` 的概念后，继续来看下这三个关键 `bean`:
 
 - **TransactionInterceptor**: 实现了 `Advice` 接口，在这里定义了拦截行为。
@@ -426,7 +444,7 @@ private static class AopAutoProxyConfigurer {
 
 > AopNamespaceUtils.registerAutoProxyCreatorIfNecessary(parserContext, element)
 
-```java
+``` 
 public static void registerAutoProxyCreatorIfNecessary(
 		ParserContext parserContext, Element sourceElement) {
 	BeanDefinition beanDefinition = AopConfigUtils.registerAutoProxyCreatorIfNecessary(
@@ -452,7 +470,7 @@ private static void registerComponentIfNecessary(@Nullable BeanDefinition beanDe
 
 与上一篇介绍的 `AOP` 代理器一样，在实例化 `bean` 的时候，调用了代理器父类 `AbstractAutoProxyCreator` 的 `postProcessAfterInitialization` 方法：
 
-```java
+``` 
 public Object postProcessAfterInitialization(@Nullable Object bean, String beanName) {
 	if (bean != null) {
 		// 组装 key
@@ -478,7 +496,7 @@ public Object postProcessAfterInitialization(@Nullable Object bean, String beanN
 
 > AopUtils#canApply(Advisor, Class<?>, boolean)
 
-```java
+``` 
 public static boolean canApply(Advisor advisor, Class<?> targetClass, boolean hasIntroductions) {
 	if (advisor instanceof IntroductionAdvisor) {
 		return ((IntroductionAdvisor) advisor).getClassFilter().matches(targetClass);
@@ -498,7 +516,7 @@ public static boolean canApply(Advisor advisor, Class<?> targetClass, boolean ha
 
 **我们之前注入的切面类型 `bean` 是 `AnnotationTransactionAttributeSource`，通过下面的方法包装，最后返回对象类型是 `TransactionAttributeSourcePointcut` 的切点信息**
 
-```java
+``` 
 private final TransactionAttributeSourcePointcut pointcut = new TransactionAttributeSourcePointcut() {
 	@Override
 	@Nullable
@@ -518,7 +536,7 @@ private final TransactionAttributeSourcePointcut pointcut = new TransactionAttri
 
 > org.springframework.transaction.interceptor.TransactionAttributeSourcePointcut#matches
 
-```java
+``` 
 @Override
 public boolean matches(Method method, Class<?> targetClass) {
 	// 事务切点匹配的方法
@@ -531,7 +549,7 @@ public boolean matches(Method method, Class<?> targetClass) {
 
 > AnnotationTransactionAttributeSource#determineTransactionAttribute
 
-```java
+``` 
 protected TransactionAttribute determineTransactionAttribute(AnnotatedElement element) {
 	for (TransactionAnnotationParser parser : this.annotationParsers) {
 		TransactionAttribute attr = parser.parseTransactionAnnotation(element);
@@ -547,7 +565,7 @@ protected TransactionAttribute determineTransactionAttribute(AnnotatedElement el
 
 > SpringTransactionAnnotationParser#parseTransactionAnnotation(AnnotatedElement)
 
-```java
+``` 
 public TransactionAttribute parseTransactionAnnotation(AnnotatedElement element) {
 	// 解析事务注解的属性
 	AnnotationAttributes attributes = AnnotatedElementUtils.findMergedAnnotationAttributes(
@@ -563,7 +581,7 @@ public TransactionAttribute parseTransactionAnnotation(AnnotatedElement element)
 
 首先判断是否含有 `@Transactional` 注解，如果有的话，才继续调用 `parse` 解析方法：
 
-```java
+``` 
 protected TransactionAttribute parseTransactionAnnotation(AnnotationAttributes attributes) {
 	RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 	// 注释 9.4 解析事务注解的每一个属性
@@ -611,7 +629,7 @@ protected TransactionAttribute parseTransactionAnnotation(AnnotationAttributes a
 
 `TransactionInterceptor` 支撑着整个事务功能的架构。跟之前 `AOP` 的 `JDK` 动态代理 分析的一样，`TransactionInterceptor` 拦截器继承于 `MethodInterceptor`，所以我们要从它的关键方法 `invoke()` 看起：
 
-```java
+``` 
 public Object invoke(MethodInvocation invocation) throws Throwable {
 	// 注释 9.5 执行事务拦截器，完成整个事务的逻辑
 	Class<?> targetClass = (invocation.getThis() != null ? AopUtils.getTargetClass(invocation.getThis()) : null);
@@ -622,7 +640,7 @@ public Object invoke(MethodInvocation invocation) throws Throwable {
 
 **实际调用了父类的方法：`TransactionAspectSupport#invokeWithinTransaction`**
 
-```java
+``` 
 protected Object invokeWithinTransaction(Method method, @Nullable Class<?> targetClass,
 		final InvocationCallback invocation) throws Throwable {
 	// 如果transaction属性为null，则该方法是非事务性的
@@ -678,7 +696,7 @@ protected Object invokeWithinTransaction(Method method, @Nullable Class<?> targe
 
 > TransactionAspectSupport#determineTransactionManager
 
-```java
+``` 
 protected PlatformTransactionManager determineTransactionManager(@Nullable TransactionAttribute txAttr) {
 	// Do not attempt to lookup tx manager if no tx attributes are set
 	// 注释 9.6 寻找事务管理器
@@ -715,7 +733,7 @@ protected PlatformTransactionManager determineTransactionManager(@Nullable Trans
 
 > TransactionAspectSupport#createTransactionIfNecessary
 
-```java
+``` 
 protected TransactionInfo createTransactionIfNecessary(PlatformTransactionManager tm, TransactionAttribute txAttr, final String joinpointIdentification) {
 	// 如果没有名称指定则使用方法唯一标识，并使用 DelegatingTransactionAttribute 包装 txAttr
 	if (txAttr != null && txAttr.getName() == null) {
@@ -758,7 +776,7 @@ protected TransactionInfo createTransactionIfNecessary(PlatformTransactionManage
 
 创建对应的事务实例，我们使用的是 `DataSourceTransactionManager` 中的 `doGetTransaction` 方法，创建基于 `JDBC` 的事务实例。
 
-```java
+``` 
 protected Object doGetTransaction() {
 	DataSourceTransactionObject txObject = new DataSourceTransactionObject();
 	txObject.setSavepointAllowed(isNestedTransactionAllowed());
@@ -773,7 +791,7 @@ protected Object doGetTransaction() {
 
 **其中在同一个线程中，判断是否有重复的事务，是在 `TransactionSynchronizationManager.getResource(obtainDataSource())` 中完成的，关键判断逻辑是下面这个：**
 
-```java
+``` 
 private static final ThreadLocal<Map<Object, Object>> resources =
 			new NamedThreadLocal<>("Transactional resources");
 			
@@ -803,7 +821,7 @@ private static Object doGetResource(Object actualKey) {
 
 **根据前面说的，判断当前线程是否存在事务，判断依据为当前线程记录的连接不为空且连接中(connectionHolder)中的 `transactionActive` 属性不为空，如果当前线程存在事务，将根据不同的事务传播特性进行处理。具体代码逻辑如下：**
 
-```java
+``` 
 if (isExistingTransaction(transaction)) {
 	// Existing transaction found -> check propagation behavior to find out how to behave.
 	// 当前线程存在事务，分情况进行处理
@@ -815,7 +833,7 @@ if (isExistingTransaction(transaction)) {
 ##### PROPAGATION_NEVER
 
 在配置中配置设定为 `PROPAGATION_NEVER`，表示该方法需要在非事务的环境下运行，但处于事务处理的状态（可能是外部带事务的方法调用了非事务的方法），将会抛出异常：
-```java
+``` 
 if (definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_NEVER) {
 		throw new IllegalTransactionStateException(
 				"Existing transaction found for transaction marked with propagation 'never'");
@@ -827,7 +845,7 @@ if (definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_NEV
 
 如果有事务存在，将事务挂起，而不是抛出异常：
 
-```java
+``` 
 if (definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_NOT_SUPPORTED) {
 	Object suspendedResources = suspend(transaction);
 	boolean newSynchronization = (getTransactionSynchronization() == SYNCHRONIZATION_ALWAYS);
@@ -843,7 +861,7 @@ if (definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_NOT
 
 实际上，`suspend()` 方法调用的是事务管理器 `DataSourceTransactionManager` 中的 `doSuspend()` 方法
 
-```java
+``` 
 protected Object doSuspend(Object transaction) {
 	DataSourceTransactionObject txObject = (DataSourceTransactionObject) transaction;
 	//  将数据库连接设置为 null
@@ -854,7 +872,7 @@ protected Object doSuspend(Object transaction) {
 
 最后调用的关键方法是 `TransactionSynchronizationManager#doUnbindResource`
 
-```java
+``` 
 private static Object doUnbindResource(Object actualKey) {
 	Map<Object, Object> map = resources.get();
 	if (map == null) {
@@ -885,7 +903,7 @@ private static Object doUnbindResource(Object actualKey) {
 
 **表示当前方法必须在它自己的事务里运行，一个新的事务将被启动，而如果有一个事务正在运行的话，则这个方法运行期间被挂起。**
 
-```java
+``` 
 SuspendedResourcesHolder suspendedResources = suspend(transaction);
 try {
 	boolean newSynchronization = (getTransactionSynchronization() != SYNCHRONIZATION_NEVER);
@@ -911,7 +929,7 @@ catch (RuntimeException | Error beginEx) {
 
 在代理处理上，有两个分支，与 `PROPAGATION_REQUIRES_NEW` 相似的不贴出来，讲下使用 `savepoint` 保存点的方式事务处理：
 
-```java
+``` 
 if (definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_NESTED) {
 	// 嵌入式事务的处理
 	if (useSavepointForNestedTransaction()) {
@@ -933,7 +951,7 @@ if (definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_NES
 
 > DataSourceTransactionManager#doBegin
 
-```java
+``` 
 protected void doBegin(Object transaction, TransactionDefinition definition) {
 	DataSourceTransactionObject txObject = (DataSourceTransactionObject) transaction;
 	Connection con = null;

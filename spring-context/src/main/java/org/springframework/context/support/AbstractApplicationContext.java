@@ -663,6 +663,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Configure the bean factory with context callbacks.
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 
+		//自动装配时忽略给定的依赖接口
+		//spring特性：A有属性B，spring在获取A的Bean时如果B还没初始化，则spring会自动初始化B
+		//在某些情况下，B不被初始化，其中一种情况B实现了指定的Aware接口
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);
 		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
 		beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);
