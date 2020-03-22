@@ -29,4 +29,12 @@ public class InfoBean {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public String toString() {
+		return "InfoBean{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				'}';
+	}
 }

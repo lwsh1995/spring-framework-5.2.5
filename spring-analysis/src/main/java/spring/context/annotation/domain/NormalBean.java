@@ -1,5 +1,7 @@
 package spring.context.annotation.domain;
 
+import org.springframework.beans.factory.ObjectFactory;
+
 public class NormalBean {
 	private String name;
 

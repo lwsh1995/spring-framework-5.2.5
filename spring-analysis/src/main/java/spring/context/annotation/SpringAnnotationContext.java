@@ -7,6 +7,7 @@ import spring.context.annotation.dao.InfoBeanDao;
 import spring.context.annotation.dao.InfoBeanJdbcTemplate;
 import spring.context.annotation.domain.EventBean;
 import spring.context.annotation.domain.InfoBean;
+import spring.context.annotation.domain.InfoFactoryBean;
 import spring.context.annotation.domain.NormalBean;
 
 public class SpringAnnotationContext {
@@ -33,6 +34,12 @@ public class SpringAnnotationContext {
 
 		AopComponent aopComponent = context.getBean(AopComponent.class);
 		aopComponent.aopMethod();
+
+		// factory bean
+		InfoBean bean = (InfoBean) context.getBean("infoFactoryBean");
+		System.out.println(bean);
+		InfoFactoryBean infoFactoryBean = (InfoFactoryBean) context.getBean("&infoFactoryBean");
+		System.out.println(infoFactoryBean.getInfo());
 
 		InfoBeanDao infoBeanDao = context.getBean(InfoBeanDao.class);
 		infoBeanDao.insertUser(new InfoBean(1,"lwsh"));
