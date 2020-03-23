@@ -2,9 +2,10 @@ package spring.context.annotation;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring.context.annotation.component.AopComponent;
+import spring.context.annotation.component.BeanModifyBeanFactoryPostProcessor;
+import spring.context.annotation.component.DateManager;
 import spring.context.annotation.config.*;
 import spring.context.annotation.dao.InfoBeanDao;
-import spring.context.annotation.dao.InfoBeanJdbcTemplate;
 import spring.context.annotation.domain.EventBean;
 import spring.context.annotation.domain.InfoBean;
 import spring.context.annotation.domain.InfoFactoryBean;
@@ -26,11 +27,20 @@ public class SpringAnnotationContext {
 				ScanConfig.class,
 				ImportConfig.class,
 				DataSourceConfig.class);
+
+		DateManager dateManager = context.getBean(DateManager.class);
+		System.out.println(dateManager.getDate());
+
+		BeanModifyBeanFactoryPostProcessor beanModify = context.getBean(BeanModifyBeanFactoryPostProcessor.class);
+		System.out.println(beanModify.getName());
+
+
 		NormalBean normalBean = context.getBean("normalBean",NormalBean.class);
 		NormalBean normal = context.getBean("normal",NormalBean.class);
 		NormalBean inner = context.getBean("inner", NormalBean.class);
 		System.out.println(normalBean+"\n"+normal+"\n"+inner);
 		context.publishEvent(new EventBean(context,"event"));
+
 
 		AopComponent aopComponent = context.getBean(AopComponent.class);
 		aopComponent.aopMethod();
@@ -40,6 +50,7 @@ public class SpringAnnotationContext {
 		System.out.println(bean);
 		InfoFactoryBean infoFactoryBean = (InfoFactoryBean) context.getBean("&infoFactoryBean");
 		System.out.println(infoFactoryBean.getInfo());
+
 
 		InfoBeanDao infoBeanDao = context.getBean(InfoBeanDao.class);
 		infoBeanDao.insertUser(new InfoBean(1,"lwsh"));

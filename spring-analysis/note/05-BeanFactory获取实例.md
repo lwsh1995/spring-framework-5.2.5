@@ -1296,6 +1296,34 @@ spring提供了Aware相关接口，如BeanFactoryAware、ApplicationContextAware
 定制的初始化方法除了配置的init-method外，还有自定义的bean实现InitializingBean接口，并在afterPropertiesSet实现业务逻辑。
 执行顺序afterPropertiesSet先执行，init-method后执行。
 
+5. 注册DisposableBean
+除了配置destroy-method方法，还可以注册DestructionAwareBeanPostProcessor统一处理bean的销毁。
+```
+protected void registerDisposableBeanIfNecessary(String beanName, Object bean, RootBeanDefinition mbd) {
+	AccessControlContext acc = (System.getSecurityManager() != null ? getAccessControlContext() : null);
+	if (!mbd.isPrototype() && requiresDestruction(bean, mbd)) {
+		if (mbd.isSingleton()) {
+			/**
+			 * 单例模式下注册需要销毁的bean，处理实现DisposableBean的bean，
+			 * 对所有的bean使用DestructionAwareBeanPostProcessors
+			 */
+			registerDisposableBean(beanName,
+					new DisposableBeanAdapter(bean, beanName, mbd, getBeanPostProcessors(), acc));
+		}
+		else {
+			// 自定义scope的处理
+			Scope scope = this.scopes.get(mbd.getScope());
+			if (scope == null) {
+				throw new IllegalStateException("No Scope registered for scope name '" + mbd.getScope() + "'");
+			}
+			scope.registerDestructionCallback(beanName,
+					new DisposableBeanAdapter(bean, beanName, mbd, getBeanPostProcessors(), acc));
+		}
+	}
+}
+```
+
+
 
 doGetBean
 ------------------------
