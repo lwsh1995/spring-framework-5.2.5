@@ -415,11 +415,16 @@ postProcessBeforeInitialization调用invokeAwareInterfaces，实现Aware接口�
 
 BeanFactory后处理
 ---------------------
-1. 激活注册的BeanFactoryPostProcessor
+1. 激活BeanFactoryPostProcessor
 可以对bean的定义（元数据）进行处理。spring容器允许在实例化任何其他bean之前读取配置元数据，并修改。改变bean实例则使用BeanPostProcessor。
 - BeanFactoryPostProcessor典型应用PropertyPlaceholderConfigurer，在实例化bean之前获得配置信息，解析bean的变量引用
 
-2. 使用自定义BeanFactoryPostProcessor
+- 使用自定义BeanFactoryPostProcessor
+
+- 激活BeanFactoryPostProcessor
+
+2. 注册BeanPostProcessor
+此时只是注册，真正调用是在bean的实例化阶段进行
 
 
 ---------------------
