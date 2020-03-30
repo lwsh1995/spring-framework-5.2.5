@@ -180,13 +180,14 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 			else {
 				// Dynamic matching failed.
 				// Skip this interceptor and invoke the next in the chain.
-				//匹配失败，跳过拦截器，直接返回
+				//不匹配则不执行拦截器
 				return proceed();
 			}
 		}
 		else {
 			// It's an interceptor, so we just invoke it: The pointcut will have
 			// been evaluated statically before this object was constructed.
+			//普通拦截器直接调用，将this作为参数传递以保证当前实例中调用链的执行
 			return ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(this);
 		}
 	}

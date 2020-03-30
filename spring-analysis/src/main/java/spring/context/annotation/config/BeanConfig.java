@@ -9,6 +9,7 @@ import spring.context.annotation.domain.InfoFactoryBean;
 import spring.context.annotation.domain.InitBean;
 import spring.context.annotation.domain.NormalBean;
 import spring.context.annotation.editor.DatePropertyEditor;
+import spring.context.annotation.processor.ProgrammaticBeanPostProcessorAware;
 
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
@@ -48,5 +49,10 @@ public class BeanConfig {
 		customEditors.put(java.util.Date.class,DatePropertyEditor.class);
 		customEditorConfigurer.setCustomEditors(customEditors);
 		return customEditorConfigurer;
+	}
+
+	@Bean
+	ProgrammaticBeanPostProcessorAware programmaticBeanPostProcessorAware(){
+		return new ProgrammaticBeanPostProcessorAware();
 	}
 }

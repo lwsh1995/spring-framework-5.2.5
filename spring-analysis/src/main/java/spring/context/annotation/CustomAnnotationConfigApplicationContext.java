@@ -1,5 +1,6 @@
 package spring.context.annotation;
 
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring.context.annotation.config.BeanConfig;
 

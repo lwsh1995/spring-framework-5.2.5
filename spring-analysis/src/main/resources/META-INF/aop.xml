@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+
+	<!--要织入切面的目标类-->
+	<weaver>
+		<include within=" spring.context.annotation.component.LTWBean..*" />
+	</weaver>
+	<!--切面类-->
+	<aspects>
+		<aspect name="spring.context.annotation.aop.LTWAspect" />
+	</aspects>
+</aspectj>

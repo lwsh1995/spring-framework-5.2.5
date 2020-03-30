@@ -4,6 +4,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import spring.context.annotation.component.AopComponent;
 import spring.context.annotation.component.BeanModifyBeanFactoryPostProcessor;
 import spring.context.annotation.component.DateManager;
+import spring.context.annotation.component.LTWBean;
 import spring.context.annotation.config.*;
 import spring.context.annotation.dao.InfoBeanDao;
 import spring.context.annotation.domain.EventBean;
@@ -25,8 +26,13 @@ public class SpringAnnotationContext {
 				= new AnnotationConfigApplicationContext(BeanConfig.class,
 				PropertiesConfig.class,
 				ScanConfig.class,
+				AspectJConfig.class,
+				LoadTimeWeaverConfig.class,
 				ImportConfig.class,
 				DataSourceConfig.class);
+
+		LTWBean ltwBean = context.getBean(LTWBean.class);
+		ltwBean.ltw();
 
 		DateManager dateManager = context.getBean(DateManager.class);
 		System.out.println(dateManager.getDate());

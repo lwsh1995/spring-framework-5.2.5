@@ -412,7 +412,6 @@ public Object postProcessBeforeInitialization(Object bean, String beanName) thro
 postProcessBeforeInitialization调用invokeAwareInterfaces，实现Aware接口的bean在初始化后可以获取对应的资源。
 
 ---------------------
-
 BeanFactory后处理
 ---------------------
 1. 激活BeanFactoryPostProcessor
@@ -424,7 +423,70 @@ BeanFactory后处理
 - 激活BeanFactoryPostProcessor
 
 2. 注册BeanPostProcessor
-此时只是注册，真正调用是在bean的实例化阶段进行
+此时只是注册，真正调用是在bean的实例化阶段进行。
 
+3. 初始化消息资源
+
+4. 初始化ApplicationEventMulticaster
+
+5. 注册监听器
 
 ---------------------
+
+初始化非延迟加载单例
+---------------------
+
+```
+	protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
+		if (beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME) &&
+				beanFactory.isTypeMatch(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class)) {
+			beanFactory.setConversionService(
+					beanFactory.getBean(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class));
+		}
+
+		if (!beanFactory.hasEmbeddedValueResolver()) {
+			beanFactory.addEmbeddedValueResolver(strVal -> getEnvironment().resolvePlaceholders(strVal));
+		}
+
+		String[] weaverAwareNames = beanFactory.getBeanNamesForType(LoadTimeWeaverAware.class, false, false);
+		for (String weaverAwareName : weaverAwareNames) {
+			getBean(weaverAwareName);
+		}
+
+		beanFactory.setTempClassLoader(null);
+
+		//冻结所有bean定义，说明注册的bean定义将不被修改或任何处理
+		beanFactory.freezeConfiguration();
+
+		// 初始化剩下非惰性的单例Bean
+		beanFactory.preInstantiateSingletons();
+	}
+```
+
+---------------------
+finishRefresh
+---------------------
+
+```
+	protected void finishRefresh() {
+		// Clear context-level resource caches (such as ASM metadata from scanning).
+		clearResourceCaches();
+
+		// Initialize lifecycle processor for this context.
+		initLifecycleProcessor();
+
+		// Propagate refresh to lifecycle processor first.
+		getLifecycleProcessor().onRefresh();
+
+		// Publish the final event.
+		publishEvent(new ContextRefreshedEvent(this));
+
+		// Participate in LiveBeansView MBean, if active.
+		LiveBeansView.registerApplicationContext(this);
+	}
+```
+- initLifecycleProcessor：当ApplicationContext启动或停止时，会通过LifecycleProcessor与所有声明的bean的周期做状态更新，
+在LifycycleProcessor使用前首先需要初始化
+- onrefresh：启动事项LifeCycle接口的bean
+- publishEvent：当ApplicationContext初始化时，发出ContextRefreshedEvent事件。
+-------------------

@@ -47,6 +47,7 @@ public class AspectJAfterAdvice extends AbstractAspectJAdvice
 			return mi.proceed();
 		}
 		finally {
+			// 激活调用方法
 			invokeAdviceMethod(getJoinPointMatch(), null, null);
 		}
 	}

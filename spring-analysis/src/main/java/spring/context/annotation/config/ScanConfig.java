@@ -6,7 +6,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableAspectJAutoProxy
 @ComponentScan(basePackages = {
 		"spring.context.annotation.processor",
 		"spring.context.annotation.component",
