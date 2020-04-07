@@ -10,6 +10,11 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
 }
+processResources{
+    from('src/main/resources'){
+        include '**/*.xml'
+    }
+}
 
 dependencies {
     compile files('../spring-core/kotlin-coroutines/build/libs/kotlin-coroutines-5.2.5.BUILD-SNAPSHOT.jar')
@@ -27,13 +32,14 @@ dependencies {
     compile(project(":spring-tx"))  // for Quartz support
     compile(project(":spring-web"))
     compile(project(":spring-webmvc"))
+    compile(project(":mybatis-spring"))
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
-
+//    compile group: 'org.mybatis', name: 'mybatis-spring', version: '2.0.3'
     compile group: 'org.aspectj',name: 'aspectjweaver',version: '1.9.3'
-
-    // https://mvnrepository.com/artifact/junit/junit
+    compile group: 'org.mybatis', name: 'mybatis', version: '3.5.4'
+    compile group: 'org.mybatis.generator', name: 'mybatis-generator-maven-plugin', version: '1.4.0'
     testCompile group: 'junit', name: 'junit', version: '4.10'
 }
 tasks.withType(JavaCompile) {
