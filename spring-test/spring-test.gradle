@@ -11,7 +11,7 @@ dependencies {
 	optional(project(":spring-orm"))
 	optional(project(":spring-tx"))
 	optional(project(":spring-web"))
-	optional(project(":spring-webflux"))
+	compile(project(":spring-webflux"))
 	optional(project(":spring-webmvc"))
 	optional(project(":spring-websocket"))
 	optional("javax.activation:javax.activation-api")
