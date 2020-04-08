@@ -157,7 +157,7 @@ public @interface MapperScan {
    *
    * @return the class of {@code MapperFactoryBean}
    */
-  Class<? extends MapperFactoryBean> factoryBean() default MapperFactoryBean.class;
+  Class<?> factoryBean() default MapperFactoryBean.class;
 
   /**
    * Whether enable lazy initialization of mapper bean.

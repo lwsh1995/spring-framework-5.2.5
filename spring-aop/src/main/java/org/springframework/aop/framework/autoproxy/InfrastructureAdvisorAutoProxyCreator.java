@@ -26,6 +26,8 @@ import org.springframework.lang.Nullable;
  *
  * @author Juergen Hoeller
  * @since 2.0.7
+ * 该类间接实现了SmartInstantiationAwareBeanPostProcessor，及所有bean实例化时都将调用
+ * postProcessAfterInitialization
  */
 @SuppressWarnings("serial")
 public class InfrastructureAdvisorAutoProxyCreator extends AbstractAdvisorAutoProxyCreator {

@@ -6,6 +6,7 @@ import spring.context.annotation.component.BeanModifyBeanFactoryPostProcessor;
 import spring.context.annotation.component.DateManager;
 import spring.context.annotation.component.LTWBean;
 import spring.context.annotation.config.*;
+import spring.context.annotation.dao.InfoBeanDao;
 import spring.context.annotation.mapper.UserMapper;
 import spring.context.annotation.domain.*;
 
@@ -56,9 +57,9 @@ public class SpringAnnotationContext {
 		System.out.println(infoFactoryBean.getInfo());
 
 
-//		InfoBeanDao infoBeanDao = context.getBean(InfoBeanDao.class);
+		InfoBeanDao infoBeanDao = context.getBean(InfoBeanDao.class);
 //		infoBeanDao.insertUser(new InfoBean(1,"lwsh"));
-//		infoBeanDao.deleteById(1);
+		infoBeanDao.deleteById(1);
 
 		UserMapper userMapper = context.getBean(UserMapper.class);
 		UserBean user = userMapper.getUser(1);

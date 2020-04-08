@@ -297,6 +297,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		if (bean != null) {
 			//更具给定的bean的class和name构建key，class_beanName
 			Object cacheKey = getCacheKey(bean.getClass(), beanName);
+			//是否是由于避免循环依赖而创建的bean代理
 			if (this.earlyProxyReferences.remove(cacheKey) != bean) {
 				// 如果适合被代理，则需要封装指定的 bean
 				return wrapIfNecessary(bean, beanName, cacheKey);

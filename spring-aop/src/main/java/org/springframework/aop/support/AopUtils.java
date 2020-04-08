@@ -227,6 +227,8 @@ public abstract class AopUtils {
 			return false;
 		}
 
+		//在事务切面中pc表示TransactionAttributeSourcePointcut
+		//pc.getMethodMatcher()返回的正是自身this
 		MethodMatcher methodMatcher = pc.getMethodMatcher();
 		if (methodMatcher == MethodMatcher.TRUE) {
 			// No need to iterate the methods if we're matching any method anyway...
