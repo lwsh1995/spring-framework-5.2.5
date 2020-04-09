@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "D:\workspace\git\spring-framework-5.2.5\mybatis\src\main\java\org\apache\ibatis\builder\xml\mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 需要在C:\Program Files\Java\jdk1.8.0_202\jre\lib 配置 jaxp.properties
+javax.xml.accessExternalSchema=all
+javax.xml.accessExternalDTD=all
+-->
 <mapper namespace="spring.context.annotation.mapper.UserMapper">
+
 	<select id="getUser" resultType="spring.context.annotation.domain.UserBean">
 		select * from user where id = #{id}
 	</select>
-
 </mapper>

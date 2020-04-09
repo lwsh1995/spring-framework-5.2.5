@@ -19,6 +19,7 @@ activemq-data/
 
 classes/
 /build
+/out
 buildSrc/build
 /spring-*/build
 /spring-core/kotlin-coroutines/build

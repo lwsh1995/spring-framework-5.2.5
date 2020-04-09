@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2020 the original author or authors.
+ *    Copyright ${license.git.copyrightYears} the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.apache.ibatis.logging.LogFactory;
  * methods.</p>
  *
  * <p>General searches are initiated by calling the
- * {@link #find(Test, String)} ()} method and supplying
+ * {@link #find(org.apache.ibatis.io.ResolverUtil.Test, String)} ()} method and supplying
  * a package name and a Test instance. This will cause the named package <b>and all sub-packages</b>
  * to be scanned for classes that meet the test. There are also utility methods for the common
  * use cases of scanning multiple packages for extensions of particular classes, or classes

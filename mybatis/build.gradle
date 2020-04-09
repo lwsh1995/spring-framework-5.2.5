@@ -1,36 +1,27 @@
-plugins {
-    id 'java'
-}
-
-group 'io.spring.asciidoctor'
-version '5.2.5.BUILD-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
+description = 'spring-mybatis'
 
 dependencies {
-
-    // https://mvnrepository.com/artifact/ognl/ognl
-    compile group: 'ognl', name: 'ognl', version: '3.2.14'
-// https://mvnrepository.com/artifact/org.javassist/javassist
-    compile group: 'org.javassist', name: 'javassist', version: '3.27.0-GA'
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
-    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
-// https://mvnrepository.com/artifact/log4j/log4j
-    compile group: 'log4j', name: 'log4j', version: '1.2.17'
-// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.1'
-// https://mvnrepository.com/artifact/commons-logging/commons-logging
-    compile group: 'commons-logging', name: 'commons-logging', version: '1.2'
-
-
-// https://mvnrepository.com/artifact/cglib/cglib
-    compile group: 'cglib', name: 'cglib', version: '3.3.0'
-
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'ognl:ognl:3.2.14'
+    compile 'org.javassist:javassist:3.27.0-GA'
+    compile 'org.slf4j:slf4j-api:1.7.30'
+    compile 'org.slf4j:slf4j-log4j12:1.7.30'
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.apache.logging.log4j:log4j-core:2.13.1'
+    compile 'commons-logging:commons-logging:1.2'
+    compile 'cglib:cglib:3.3.0'
+    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.6.1'
+    testCompile 'org.hsqldb:hsqldb:2.5.0'
+    testCompile 'org.apache.derby:derby:10.14.2.0'
+    testCompile 'org.mockito:mockito-core:3.3.3'
+    testCompile 'org.mockito:mockito-junit-jupiter:3.3.3'
+    testCompile 'org.apache.velocity:velocity-engine-core:2.2'
+    testCompile 'org.postgresql:postgresql:42.2.12'
+    testCompile 'mysql:mysql-connector-java:8.0.19'
+    testCompile 'org.assertj:assertj-core:3.15.0'
+    testCompile 'eu.codearte.catch-exception:catch-exception:2.0'
+    testCompile 'org.testcontainers:junit-jupiter:1.13.0'
+    testCompile 'org.testcontainers:postgresql:1.13.0'
+    testCompile 'org.testcontainers:mysql:1.13.0'
 }
+
+

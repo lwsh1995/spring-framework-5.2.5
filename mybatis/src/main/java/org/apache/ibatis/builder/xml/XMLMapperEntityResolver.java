@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2020 the original author or authors.
+ *    Copyright ${license.git.copyrightYears} the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ public class XMLMapperEntityResolver implements EntityResolver {
    *          The system id that is what comes after the public id.
    * @return The InputSource for the DTD
    *
-   * @throws SAXException
+   * @throws org.xml.sax.SAXException
    *           If anything goes wrong
    */
   @Override

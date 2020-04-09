@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2020 the original author or authors.
+ *    Copyright ${license.git.copyrightYears} the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -237,7 +237,7 @@ class PooledConnection implements InvocationHandler {
    *          - the method to be executed
    * @param args
    *          - the parameters to be passed to the method
-   * @see InvocationHandler#invoke(Object, Method, Object[])
+   * @see java.lang.reflect.InvocationHandler#invoke(Object, java.lang.reflect.Method, Object[])
    */
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
