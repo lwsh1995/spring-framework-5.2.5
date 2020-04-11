@@ -177,6 +177,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
   //
   // HANDLE RESULT SETS
   //
+  @SuppressWarnings("unchecked")
   @Override
   public List<Object> handleResultSets(Statement stmt) throws SQLException {
     ErrorContext.instance().activity("handling results").object(mappedStatement.getId());
@@ -310,7 +311,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     }
   }
 
-  @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
   private List<Object> collapseSingleResultList(List<Object> multipleResults) {
     return multipleResults.size() == 1 ? (List<Object>) multipleResults.get(0) : multipleResults;
   }

@@ -40,6 +40,7 @@ dependencies {
     compile(project(":spring-webmvc"))
     compile(project(":mybatis-spring"))
     compile(project(":mybatis"))
+
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'

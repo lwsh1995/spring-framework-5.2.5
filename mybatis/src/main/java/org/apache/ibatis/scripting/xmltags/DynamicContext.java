@@ -123,7 +123,9 @@ public class DynamicContext {
       return null;
     }
 
-    @Override
+
+	  @SuppressWarnings("unchecked")
+	  @Override
     public void setProperty(Map context, Object target, Object name, Object value) {
       Map<Object, Object> map = (Map<Object, Object>) target;
       map.put(name, value);

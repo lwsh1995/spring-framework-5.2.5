@@ -51,15 +51,15 @@ public class CompilerConventionsPlugin implements Plugin<Project> {
 
 	static {
 		List<String> commonCompilerArgs = Arrays.asList(
-				"-Xlint:serial", "-Xlint:cast", "-Xlint:classfile", "-Xlint:dep-ann",
+				"-Xlint:serial", "-Xlint:classfile", "-Xlint:dep-ann",//"-Xlint:cast",
 				"-Xlint:divzero", "-Xlint:empty", "-Xlint:finally", "-Xlint:overrides",
 				"-Xlint:path", "-Xlint:processing", "-Xlint:static", "-Xlint:try", "-Xlint:-options"
 		);
 		COMPILER_ARGS = new ArrayList<>();
 		COMPILER_ARGS.addAll(commonCompilerArgs);
 		COMPILER_ARGS.addAll(Arrays.asList(
-				"-Xlint:varargs", "-Xlint:fallthrough", "-Xlint:rawtypes", "-Xlint:deprecation",
-				"-Xlint:unchecked", "-Werror"
+				"-Xlint:varargs", "-Xlint:fallthrough"//, "-Xlint:rawtypes"//, "-Xlint:deprecation"
+//				"-Xlint:unchecked"//, "-Werror"
 		));
 		TEST_COMPILER_ARGS = new ArrayList<>();
 		TEST_COMPILER_ARGS.addAll(commonCompilerArgs);

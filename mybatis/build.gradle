@@ -1,4 +1,4 @@
-description = 'spring-mybatis'
+description = 'mybatis'
 
 dependencies {
     compile 'ognl:ognl:3.2.14'
@@ -22,6 +22,6 @@ dependencies {
     testCompile 'org.testcontainers:junit-jupiter:1.13.0'
     testCompile 'org.testcontainers:postgresql:1.13.0'
     testCompile 'org.testcontainers:mysql:1.13.0'
-}
 
+}
 

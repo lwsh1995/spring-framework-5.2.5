@@ -44,7 +44,8 @@ public class DefaultMapResultHandler<K, V> implements ResultHandler<V> {
     this.mapKey = mapKey;
   }
 
-  @Override
+	@SuppressWarnings("unchecked")
+	@Override
   public void handleResult(ResultContext<? extends V> context) {
     final V value = context.getResultObject();
     final MetaObject mo = MetaObject.forObject(value, objectFactory, objectWrapperFactory, reflectorFactory);

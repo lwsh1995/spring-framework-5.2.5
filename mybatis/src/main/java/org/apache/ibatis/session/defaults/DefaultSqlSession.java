@@ -322,9 +322,8 @@ public class DefaultSqlSession implements SqlSession {
   }
 
   /**
-   * @deprecated Since 3.5.5
+   * deprecated Since 3.5.5
    */
-  @Deprecated
   public static class StrictMap<V> extends HashMap<String, V> {
 
     private static final long serialVersionUID = -5741767162221585340L;

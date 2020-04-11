@@ -72,7 +72,7 @@ public abstract class BaseWrapper implements ObjectWrapper {
       }
     }
   }
-
+	@SuppressWarnings("unchecked")
   protected void setCollectionValue(PropertyTokenizer prop, Object collection, Object value) {
     if (collection instanceof Map) {
       ((Map) collection).put(prop.getIndex(), value);

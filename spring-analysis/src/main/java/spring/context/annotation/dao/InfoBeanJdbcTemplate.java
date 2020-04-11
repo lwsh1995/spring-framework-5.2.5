@@ -37,7 +37,7 @@ public class InfoBeanJdbcTemplate implements InfoBeanDao {
 	@Override
 	public List<InfoBean> selectAll() {
 		String sql="select * from info_bean";
-		List query = jdbcTemplate.query(sql, new InfoBeanMapper());
+		List<InfoBean> query = jdbcTemplate.query(sql, new InfoBeanMapper());
 		return query;
 	}
 }

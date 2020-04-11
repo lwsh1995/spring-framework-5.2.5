@@ -411,3 +411,15 @@ configure(rootProject) {
 		}
 	}
 }
+
+
+
+tasks.withType(JavaCompile) {
+	// Try to turn them all off automatically
+	options.warnings = false
+	options.deprecation = false
+	options.compilerArgs << '-Xlint:none'
+	options.compilerArgs << '-nowarn' // same as '-Xlint:none'
+	options.compilerArgs << "-Xlint:unchecked"
+
+}

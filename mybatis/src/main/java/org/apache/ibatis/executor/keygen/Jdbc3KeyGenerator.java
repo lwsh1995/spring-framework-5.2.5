@@ -89,7 +89,7 @@ public class Jdbc3KeyGenerator implements KeyGenerator {
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked","deprecation"})
   private void assignKeys(Configuration configuration, ResultSet rs, ResultSetMetaData rsmd, String[] keyProperties,
       Object parameter) throws SQLException {
     if (parameter instanceof ParamMap || parameter instanceof StrictMap) {

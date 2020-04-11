@@ -58,7 +58,9 @@ public class DefaultParameterHandler implements ParameterHandler {
     return parameterObject;
   }
 
-  @Override
+	@SuppressWarnings("unchecked")
+
+	@Override
   public void setParameters(PreparedStatement ps) {
     ErrorContext.instance().activity("setting parameters").object(mappedStatement.getParameterMap().getId());
     List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
