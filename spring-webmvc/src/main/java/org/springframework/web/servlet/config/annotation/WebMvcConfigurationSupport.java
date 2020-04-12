@@ -403,12 +403,16 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	/**
 	 * Return a {@link ContentNegotiationManager} instance to use to determine
 	 * requested {@linkplain MediaType media types} in a given request.
+	 * 内容协商管理器，用于决定请求的媒体类型
 	 */
 	@Bean
 	public ContentNegotiationManager mvcContentNegotiationManager() {
 		if (this.contentNegotiationManager == null) {
+			//初始化
 			ContentNegotiationConfigurer configurer = new ContentNegotiationConfigurer(this.servletContext);
+			//设置媒体类型
 			configurer.mediaTypes(getDefaultMediaTypes());
+			//构建
 			configureContentNegotiation(configurer);
 			this.contentNegotiationManager = configurer.buildContentNegotiationManager();
 		}
@@ -447,6 +451,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	 * Return a handler mapping ordered at 1 to map URL paths directly to
 	 * view names. To configure view controllers, override
 	 * {@link #addViewControllers}.
+	 * 映射处理，将url映射到试图名称
 	 */
 	@Bean
 	@Nullable
@@ -479,6 +484,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	/**
 	 * Return a {@link BeanNameUrlHandlerMapping} ordered at 2 to map URL
 	 * paths to controller bean names.
+	 * 将url映射到控制器的bean名称
 	 */
 	@Bean
 	public BeanNameUrlHandlerMapping beanNameHandlerMapping(
@@ -520,6 +526,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	 * Return a handler mapping ordered at Integer.MAX_VALUE-1 with mapped
 	 * resource handlers. To configure resource handling, override
 	 * {@link #addResourceHandlers}.
+	 * 资源映射处理器
 	 */
 	@Bean
 	@Nullable
@@ -558,6 +565,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	/**
 	 * A {@link ResourceUrlProvider} bean for use with the MVC dispatcher.
 	 * @since 4.1
+	 * 用于mvc分派
 	 */
 	@Bean
 	public ResourceUrlProvider mvcResourceUrlProvider() {
@@ -611,9 +619,13 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 			@Qualifier("mvcValidator") Validator validator) {
 
 		RequestMappingHandlerAdapter adapter = createRequestMappingHandlerAdapter();
+		//内容协商管理器
 		adapter.setContentNegotiationManager(contentNegotiationManager);
+		//添加消息转换器
 		adapter.setMessageConverters(getMessageConverters());
+		//配置绑定器
 		adapter.setWebBindingInitializer(getConfigurableWebBindingInitializer(conversionService, validator));
+		//设置参数解析器
 		adapter.setCustomArgumentResolvers(getArgumentResolvers());
 		adapter.setCustomReturnValueHandlers(getReturnValueHandlers());
 
@@ -622,6 +634,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 			adapter.setResponseBodyAdvice(Collections.singletonList(new JsonViewResponseBodyAdvice()));
 		}
 
+		//配置异步支持配置器
 		AsyncSupportConfigurer configurer = new AsyncSupportConfigurer();
 		configureAsyncSupport(configurer);
 		if (configurer.getTaskExecutor() != null) {
@@ -630,7 +643,9 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 		if (configurer.getTimeout() != null) {
 			adapter.setAsyncRequestTimeout(configurer.getTimeout());
 		}
+		//返回值拦截器
 		adapter.setCallableInterceptors(configurer.getCallableInterceptors());
+		//延迟结果拦截器
 		adapter.setDeferredResultInterceptors(configurer.getDeferredResultInterceptors());
 
 		return adapter;
@@ -713,6 +728,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	 * checks the classpath for the presence of a JSR-303 implementations
 	 * before creating a {@code OptionalValidatorFactoryBean}.If a JSR-303
 	 * implementation is not available, a no-op {@link Validator} is returned.
+	 * 全局验证器，例如用于验证@ModelAttribute和@RequestBody方法参数。
 	 */
 	@Bean
 	public Validator mvcValidator() {
@@ -1034,6 +1050,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	 * {@link ViewResolverComposite#resolveViewName(String, Locale)} returns null in order
 	 * to allow other potential {@link ViewResolver} beans to resolve views.
 	 * @since 4.1
+	 * 视图解析器
 	 */
 	@Bean
 	public ViewResolver mvcViewResolver(

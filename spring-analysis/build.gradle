@@ -9,7 +9,7 @@ repositories {
 }
 processResources{
     from('src/main/resources'){
-        include '**/*.xml'
+        include '**/**'
     }
 }
 
@@ -41,13 +41,13 @@ dependencies {
     compile(project(":mybatis-spring"))
     compile(project(":mybatis"))
 
+    compile group: 'javax.servlet.jsp', name: 'javax.servlet.jsp-api', version: '2.3.2-b02'
+    compile group: 'javax.servlet.jsp.jstl', name: 'jstl', version: '1.2'
+    compile group: 'taglibs', name: 'standard', version: '1.1.2'
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
-//    compile group: 'org.mybatis', name: 'mybatis-spring', version: '2.0.3'
     compile group: 'org.aspectj',name: 'aspectjweaver',version: '1.9.3'
-//    compile group: 'org.mybatis', name: 'mybatis', version: '3.5.4'
-//    compile group: 'org.mybatis.generator', name: 'mybatis-generator-maven-plugin', version: '1.4.0'
     testCompile group: 'junit', name: 'junit', version: '4.10'
 }
 
@@ -58,7 +58,11 @@ repositories {
 apply plugin: 'org.gretty'
 
 
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
+gretty {
+    // 指定默认 Servlet 容器,支持 jetty7/8/9，jetty9.3/9.4(仅 jdk8),tomcat7/8
+//    servletContainer = 'tomcat8'
+    // 修改服务器端口
+    httpPort = 80
+    // 修改上下文路径
+    contextPath = '/'
 }
-
